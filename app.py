@@ -164,11 +164,8 @@ tab_gen, tab_queue, tab_preview, tab_history, tab_prompts = st.tabs(
 with tab_gen:
     st.header("Генерация каруселей")
 
-    col1, col2 = st.columns(2)
-    with col1:
-        gen_count = st.number_input("Количество", min_value=1, max_value=50, value=posts_per_day, key="gen_count")
-    with col2:
-        gen_provider = st.selectbox("Провайдер", ["gemini", "claude", "openai"], key="gen_prov")
+    gen_count = st.number_input("Количество", min_value=1, max_value=50, value=posts_per_day, key="gen_count")
+    gen_provider = provider  # берём из sidebar
 
     if st.button("Сгенерировать карусели", type="primary"):
         from generate_text import generate_carousel_batch, generate_ideas
