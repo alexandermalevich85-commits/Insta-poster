@@ -1,0 +1,30 @@
+# Secrets & sessions
+.env
+ig_session_*.json
+provider.cfg
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Generated content
+tmp/
+history.json
+ideas.json
+pending_posts.json
+prompts.json
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS
+.DS_Store
+Thumbs.db
+*.tmp
+
+# IDE
+.idea/
+.vscode/
