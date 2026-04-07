@@ -4,8 +4,8 @@ on:
   schedule:
     # Generate batch at 05:00 MSK (02:00 UTC)
     - cron: '0 2 * * *'
-    # Publish checks every 30 minutes from 08:00 to 22:00 MSK (05:00-19:00 UTC)
-    - cron: '*/30 5-19 * * *'
+    # Publish checks every 15 minutes from 08:00 to 22:00 MSK (05:00-19:00 UTC)
+    - cron: '*/15 5-19 * * *'
   workflow_dispatch:
     inputs:
       phase:
@@ -16,31 +16,21 @@ on:
         options:
           - generate
           - publish_next
-          - publish
-          - schedule
-          - generate_and_schedule
           - full
-          - render_test
 
 env:
-  TEXT_PROVIDER: ${{ vars.TEXT_PROVIDER || 'gemini' }}
-  TEXT_MODEL: ${{ vars.TEXT_MODEL || '' }}
-  CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+  TEXT_PROVIDER: 'gemini'
   GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-  IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
-  IG_USER_ID: ${{ secrets.IG_USER_ID }}
-  IG_PUBLISH_METHOD: ${{ vars.IG_PUBLISH_METHOD || 'graph_api' }}
-  IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
+  IG_PUBLISH_METHOD: 'instagrapi'
   INSTAGRAPI_USERNAME: ${{ secrets.INSTAGRAPI_USERNAME }}
   INSTAGRAPI_PASSWORD: ${{ secrets.INSTAGRAPI_PASSWORD }}
-  POSTS_PER_DAY: ${{ vars.POSTS_PER_DAY || '20' }}
-  PUBLISH_START_HOUR: ${{ vars.PUBLISH_START_HOUR || '8' }}
-  PUBLISH_END_HOUR: ${{ vars.PUBLISH_END_HOUR || '22' }}
+  POSTS_PER_DAY: '20'
+  PUBLISH_START_HOUR: '8'
+  PUBLISH_END_HOUR: '22'
   TIMEZONE: 'Europe/Moscow'
 
 jobs:
-  # ── Phase 1: Generate batch of carousels ─────────────────────────────────
+  # ── Generate posts for the day (05:00 MSK) ─────────────────────────────
   generate:
     runs-on: ubuntu-latest
     if: >-
@@ -58,16 +48,10 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Install fonts
-        run: |
-          mkdir -p ~/.fonts
-          cp fonts/*.ttf ~/.fonts/
-          fc-cache -f -v
-
       - name: Generate carousels
         run: python main.py generate
 
-      - name: Commit changes
+      - name: Commit generated posts
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
@@ -75,12 +59,12 @@ jobs:
           git diff --staged --quiet || git commit -m "Auto-generate carousels $(date +%Y-%m-%d)"
           git push
 
-  # ── Phase 2: Publish next due carousel ───────────────────────────────────
+  # ── Publish due posts (every 15 min) ───────────────────────────────────
   publish:
     runs-on: ubuntu-latest
     if: >-
-      (github.event_name == 'schedule' && github.event.schedule == '*/30 5-19 * * *')
-      || (github.event_name == 'workflow_dispatch' && (github.event.inputs.phase == 'publish_next' || github.event.inputs.phase == 'publish' || github.event.inputs.phase == 'full'))
+      (github.event_name == 'schedule' && github.event.schedule == '*/15 5-19 * * *')
+      || (github.event_name == 'workflow_dispatch' && (github.event.inputs.phase == 'publish_next' || github.event.inputs.phase == 'full'))
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -93,28 +77,31 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Restore Instagram session
+        run: |
+          echo '${{ secrets.IG_SESSION }}' > ig_session_${{ secrets.INSTAGRAPI_USERNAME }}.json
+
       - name: Install fonts
         run: |
           mkdir -p ~/.fonts
           cp fonts/*.ttf ~/.fonts/
           fc-cache -f -v
 
-      - name: Determine command
-        id: cmd
+      - name: Publish next due post
+        run: python main.py publish_next
+
+      - name: Save updated session
+        if: always()
         run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "command=${{ github.event.inputs.phase }}" >> $GITHUB_OUTPUT
-          else
-            echo "command=publish_next" >> $GITHUB_OUTPUT
+          if [ -f ig_session_${{ secrets.INSTAGRAPI_USERNAME }}.json ]; then
+            echo "Session file exists, remember to update IG_SESSION secret if login was refreshed"
           fi
 
-      - name: Publish
-        run: python main.py ${{ steps.cmd.outputs.command }}
-
       - name: Commit changes
+        if: always()
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add pending_posts.json history.json
-          git diff --staged --quiet || git commit -m "Auto-publish carousel $(date +%Y-%m-%d_%H:%M)"
+          git diff --staged --quiet || git commit -m "Auto-publish $(date +%Y-%m-%d_%H:%M)"
           git push

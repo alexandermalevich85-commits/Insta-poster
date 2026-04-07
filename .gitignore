@@ -12,9 +12,7 @@ venv/
 
 # Generated content
 tmp/
-history.json
-ideas.json
-pending_posts.json
+autopublish.log
 
 # Streamlit
 .streamlit/secrets.toml
