@@ -15,7 +15,6 @@ tmp/
 history.json
 ideas.json
 pending_posts.json
-prompts.json
 
 # Streamlit
 .streamlit/secrets.toml
