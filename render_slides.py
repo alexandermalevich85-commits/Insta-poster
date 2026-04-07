@@ -416,11 +416,42 @@ def _create_slide() -> tuple[Image.Image, ImageDraw.ImageDraw]:
     return img, draw
 
 
+COVER_PHOTO_PATH = os.path.join(os.path.dirname(__file__), "zastavka_karusel.jpg")
+COVER_OVERLAY_COLOR = (0, 0, 0, 140)  # semi-transparent black overlay
+COVER_TEXT_COLOR = "#FFFFFF"
+
+
 def render_slide_cover(headline: str, output_path: str) -> str:
-    """Render slide 1: cover with large headline."""
-    img, draw = _create_slide()
+    """Render slide 1: photo background with headline overlay."""
+    # Load and resize cover photo to fit slide
+    if os.path.exists(COVER_PHOTO_PATH):
+        photo = Image.open(COVER_PHOTO_PATH).convert("RGBA")
+        # Crop to 4:5 aspect ratio (center crop)
+        target_ratio = SLIDE_WIDTH / SLIDE_HEIGHT
+        photo_ratio = photo.width / photo.height
+        if photo_ratio > target_ratio:
+            # Photo is wider — crop sides
+            new_w = int(photo.height * target_ratio)
+            left = (photo.width - new_w) // 2
+            photo = photo.crop((left, 0, left + new_w, photo.height))
+        else:
+            # Photo is taller — crop top/bottom
+            new_h = int(photo.width / target_ratio)
+            top = (photo.height - new_h) // 2
+            photo = photo.crop((0, top, photo.width, top + new_h))
+        photo = photo.resize((SLIDE_WIDTH, SLIDE_HEIGHT), Image.LANCZOS)
+
+        # Add dark overlay for text readability
+        overlay = Image.new("RGBA", (SLIDE_WIDTH, SLIDE_HEIGHT), COVER_OVERLAY_COLOR)
+        img = Image.alpha_composite(photo, overlay)
+    else:
+        # Fallback: plain background
+        img = Image.new("RGBA", (SLIDE_WIDTH, SLIDE_HEIGHT), BG_COLOR)
+
+    draw = ImageDraw.Draw(img)
     font = _get_font("evolventa_bold", COVER_FONT_SIZE)
-    _draw_centered_text(draw, headline, font, TEXT_AREA_TOP, TEXT_AREA_BOTTOM, img=img)
+    _draw_centered_text(draw, headline, font, TEXT_AREA_TOP, TEXT_AREA_BOTTOM,
+                        color=COVER_TEXT_COLOR, img=img)
     img.convert("RGB").save(output_path, "JPEG", quality=95)
     return output_path
 
