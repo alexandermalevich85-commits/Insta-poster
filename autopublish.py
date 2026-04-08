@@ -143,10 +143,10 @@ def publish_due_posts() -> int:
         try:
             cmd_publish_next()
             published_count += 1
-            # Pause 1-2 minutes between posts
+            # Pause 1-5 minutes between posts (random)
             if published_count < max_per_run:
                 import random
-                pause = random.randint(60, 120)
+                pause = random.randint(60, 300)
                 log.info("Waiting %d seconds before next post...", pause)
                 time.sleep(pause)
         except Exception as e:
