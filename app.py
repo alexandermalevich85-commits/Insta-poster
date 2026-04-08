@@ -401,38 +401,14 @@ with tab_queue:
                         st.rerun()
 
         st.divider()
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         with col1:
-            if st.button("Опубликовать следующий"):
-                from main import cmd_publish_next
-                import traceback
-                try:
-                    with st.spinner("Публикация..."):
-                        cmd_publish_next()
-                    st.success("Опубликовано!")
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Ошибка: {e}")
-                    st.code(traceback.format_exc())
-
-        with col2:
-            if st.button("Запланировать через API"):
-                from main import cmd_schedule
-                try:
-                    cmd_schedule()
-                    st.success("Карусели запланированы через API!")
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Ошибка: {e}")
-
-        col3, col4 = st.columns(2)
-        with col3:
             if st.button("Очистить опубликованные"):
                 pending = [p for p in pending if p.get("status") not in ("published", "scheduled")]
                 save_json(PENDING_FILE, pending)
                 st.success("Очищено!")
                 st.rerun()
-        with col4:
+        with col2:
             if st.button("Сохранить очередь в GitHub"):
                 pushed = sync_to_github(
                     [(PENDING_FILE, "Update pending posts from Streamlit UI")],
@@ -440,6 +416,14 @@ with tab_queue:
                 )
                 if pushed:
                     st.success("Очередь отправлена в GitHub!")
+                else:
+                    st.error("Ошибка. Проверьте GITHUB_TOKEN.")
+        with col3:
+            if st.button("Загрузить из GitHub"):
+                pulled = sync_from_github()
+                if pulled:
+                    st.success(f"Загружено: {', '.join(pulled)}")
+                    st.rerun()
                 else:
                     st.error("Ошибка. Проверьте GITHUB_TOKEN.")
 
