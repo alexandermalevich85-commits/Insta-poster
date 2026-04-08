@@ -131,7 +131,7 @@ def publish_due_posts() -> int:
 
         has_due = False
         for post in pending:
-            if post["status"] == "pending" and post.get("scheduled_at"):
+            if post["status"] in ("pending", "retry") and post.get("scheduled_at"):
                 scheduled_dt = datetime.fromisoformat(post["scheduled_at"])
                 if scheduled_dt <= now:
                     has_due = True

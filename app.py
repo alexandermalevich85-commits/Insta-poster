@@ -426,31 +426,11 @@ with tab_queue:
                         st.rerun()
 
         st.divider()
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            if st.button("Очистить опубликованные"):
-                pending = [p for p in pending if p.get("status") not in ("published", "scheduled")]
-                save_json(PENDING_FILE, pending)
-                st.success("Очищено!")
-                st.rerun()
-        with col2:
-            if st.button("Сохранить очередь в GitHub"):
-                pushed = sync_to_github(
-                    [(PENDING_FILE, "Update pending posts from Streamlit UI")],
-                    "Update pending posts",
-                )
-                if pushed:
-                    st.success("Очередь отправлена в GitHub!")
-                else:
-                    st.error("Ошибка. Проверьте GITHUB_TOKEN.")
-        with col3:
-            if st.button("Загрузить из GitHub"):
-                pulled = sync_from_github()
-                if pulled:
-                    st.success(f"Загружено: {', '.join(pulled)}")
-                    st.rerun()
-                else:
-                    st.error("Ошибка. Проверьте GITHUB_TOKEN.")
+        if st.button("Очистить опубликованные"):
+            pending = [p for p in pending if p.get("status") not in ("published", "scheduled")]
+            save_json(PENDING_FILE, pending)
+            st.success("Очищено!")
+            st.rerun()
 
 
 # ── Tab 3: Preview ───────────────────────────────────────────────────────────
