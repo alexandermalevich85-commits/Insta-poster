@@ -86,13 +86,14 @@ def _call_llm_raw(
                 )
                 return resp.text
             except Exception as e:
-                if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
+                err = str(e)
+                if "429" in err or "RESOURCE_EXHAUSTED" in err or "503" in err or "UNAVAILABLE" in err:
                     wait = 40 * (attempt + 1)
-                    log.warning("Gemini rate limit, waiting %ds (attempt %d/5)...", wait, attempt + 1)
+                    log.warning("Gemini error (%s), waiting %ds (attempt %d/5)...", err[:80], wait, attempt + 1)
                     time.sleep(wait)
                 else:
                     raise
-        raise RuntimeError("Gemini rate limit exceeded after 5 retries")
+        raise RuntimeError("Gemini API failed after 5 retries")
     elif prov == "openai":
         import openai
         key = api_key or OPENAI_API_KEY
