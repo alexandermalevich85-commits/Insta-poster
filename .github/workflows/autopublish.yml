@@ -8,15 +8,14 @@ on:
     - cron: '*/15 5-19 * * *'
   workflow_dispatch:
     inputs:
-      phase:
-        description: 'Phase to run'
+      action:
+        description: 'Что сделать'
         required: true
-        default: 'publish_next'
+        default: 'generate'
         type: choice
         options:
           - generate
-          - publish_next
-          - full
+          - publish
 
 env:
   TEXT_PROVIDER: 'gemini'
@@ -30,12 +29,8 @@ env:
   TIMEZONE: 'Europe/Moscow'
 
 jobs:
-  # ── Generate posts for the day (05:00 MSK) ─────────────────────────────
-  generate:
+  run:
     runs-on: ubuntu-latest
-    if: >-
-      (github.event_name == 'schedule' && github.event.schedule == '0 2 * * *')
-      || (github.event_name == 'workflow_dispatch' && (github.event.inputs.phase == 'generate' || github.event.inputs.phase == 'full'))
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,39 +42,6 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
-
-      - name: Generate carousels
-        run: python main.py generate
-
-      - name: Commit generated posts
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add pending_posts.json ideas.json
-          git diff --staged --quiet || git commit -m "Auto-generate carousels $(date +%Y-%m-%d)"
-          git push
-
-  # ── Publish due posts (every 15 min) ───────────────────────────────────
-  publish:
-    runs-on: ubuntu-latest
-    if: >-
-      (github.event_name == 'schedule' && github.event.schedule == '*/15 5-19 * * *')
-      || (github.event_name == 'workflow_dispatch' && (github.event.inputs.phase == 'publish_next' || github.event.inputs.phase == 'full'))
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Restore Instagram session
-        run: |
-          echo '${{ secrets.IG_SESSION }}' > ig_session_${{ secrets.INSTAGRAPI_USERNAME }}.json
 
       - name: Install fonts
         run: |
@@ -87,21 +49,38 @@ jobs:
           cp fonts/*.ttf ~/.fonts/
           fc-cache -f -v
 
-      - name: Publish next due post
-        run: python main.py publish_next
-
-      - name: Save updated session
-        if: always()
+      - name: Restore Instagram session
+        if: env.ACTION == 'publish' || github.event.schedule == '*/15 5-19 * * *'
+        env:
+          ACTION: ${{ github.event.inputs.action }}
         run: |
-          if [ -f ig_session_${{ secrets.INSTAGRAPI_USERNAME }}.json ]; then
-            echo "Session file exists, remember to update IG_SESSION secret if login was refreshed"
+          if [ -n "${{ secrets.IG_SESSION }}" ]; then
+            echo '${{ secrets.IG_SESSION }}' > ig_session_${{ secrets.INSTAGRAPI_USERNAME }}.json
           fi
 
+      - name: Determine action
+        id: action
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "cmd=${{ github.event.inputs.action }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event.schedule }}" == "0 2 * * *" ]; then
+            echo "cmd=generate" >> $GITHUB_OUTPUT
+          else
+            echo "cmd=publish" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate carousels
+        if: steps.action.outputs.cmd == 'generate'
+        run: python main.py generate
+
+      - name: Publish next post
+        if: steps.action.outputs.cmd == 'publish'
+        run: python main.py publish_next
+
       - name: Commit changes
-        if: always()
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add pending_posts.json history.json
-          git diff --staged --quiet || git commit -m "Auto-publish $(date +%Y-%m-%d_%H:%M)"
-          git push
+          git add pending_posts.json ideas.json history.json 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "Auto: ${{ steps.action.outputs.cmd }} $(date +%Y-%m-%d_%H:%M)"
+          git push || echo "Nothing to push"
