@@ -77,11 +77,22 @@ def _call_llm_raw(
         return msg.content[0].text
     elif prov == "gemini":
         client = get_gemini_client(api_key_override=api_key)
-        resp = client.models.generate_content(
-            model=model or DEFAULT_TEXT_MODELS["gemini"],
-            contents=f"{system_prompt}\n\n{user_message}",
-        )
-        return resp.text
+        mdl = model or DEFAULT_TEXT_MODELS["gemini"]
+        for attempt in range(5):
+            try:
+                resp = client.models.generate_content(
+                    model=mdl,
+                    contents=f"{system_prompt}\n\n{user_message}",
+                )
+                return resp.text
+            except Exception as e:
+                if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
+                    wait = 40 * (attempt + 1)
+                    log.warning("Gemini rate limit, waiting %ds (attempt %d/5)...", wait, attempt + 1)
+                    time.sleep(wait)
+                else:
+                    raise
+        raise RuntimeError("Gemini rate limit exceeded after 5 retries")
     elif prov == "openai":
         import openai
         key = api_key or OPENAI_API_KEY
@@ -173,6 +184,49 @@ def generate_carousel(
     return data
 
 
+def _generate_batch_prompt(ideas_chunk: list[str], cta_options: list[dict]) -> str:
+    """Build a prompt to generate multiple carousels in one API call."""
+    cta_examples = []
+    for i, idea in enumerate(ideas_chunk):
+        cta = cta_options[i % len(cta_options)]
+        cta_examples.append(f'  Карусель {i+1}: тема: "{idea}", cta_keyword: "{cta["keyword"]}", cta_text: "{cta["text"]}", ps_text: "{cta.get("ps", "")}"')
+
+    tasks = "\n".join(cta_examples)
+    return (
+        f"Создай {len(ideas_chunk)} каруселей СРАЗУ. Для каждой используй указанную тему и CTA.\n\n"
+        f"{tasks}\n\n"
+        f"Формат ответа — ТОЛЬКО валидный JSON-массив (без markdown-блоков ```json):\n"
+        f"[\n"
+        f'  {{"headline": "...", "points": ["1. ...", "2. ...", "3. ...", "4. ...", "5. ..."], '
+        f'"cta_keyword": "...", "cta_text": "...", "ps_text": "..."}},\n'
+        f"  ...\n"
+        f"]\n"
+    )
+
+
+def _parse_batch_json(raw: str) -> list[dict]:
+    """Parse batch carousel JSON from LLM response."""
+    text = raw.strip()
+    text = re.sub(r"^```(?:json)?\s*\n?", "", text)
+    text = re.sub(r"\n?```\s*$", "", text)
+    text = text.strip()
+
+    data = json.loads(text)
+    if not isinstance(data, list):
+        data = [data]
+
+    results = []
+    for item in data:
+        if "headline" in item and "points" in item:
+            if isinstance(item["points"], list) and len(item["points"]) == 5:
+                results.append(item)
+            else:
+                log.warning("Skipping carousel with %d points", len(item.get("points", [])))
+        else:
+            log.warning("Skipping carousel without headline/points")
+    return results
+
+
 def generate_carousel_batch(
     ideas: list[str],
     count: int = 20,
@@ -181,46 +235,65 @@ def generate_carousel_batch(
     api_key: str | None = None,
     model: str | None = None,
     cta_options: list[dict] | None = None,
-    delay_between: float = 2.0,
+    delay_between: float = 5.0,
+    batch_size: int = 5,
 ) -> list[dict]:
     """Generate a batch of carousels from ideas.
 
+    Generates multiple carousels per API call to minimize API usage.
     Returns list of carousel dicts.
     """
+    from utils import retry
+
     if cta_options is None:
         cta_options = _load_cta_options()
 
+    if system_prompt is None:
+        system_prompt = _load_default_system_prompt()
+
+    prov = provider or TEXT_PROVIDER
+    ideas_list = ideas[:count]
     carousels = []
-    used_cta_indices = []
 
-    for i, idea in enumerate(ideas[:count]):
-        log.info("Generating carousel %d/%d: %s", i + 1, count, idea[:50])
+    # Split into batches
+    for batch_start in range(0, len(ideas_list), batch_size):
+        chunk = ideas_list[batch_start:batch_start + batch_size]
+        batch_num = batch_start // batch_size + 1
+        total_batches = (len(ideas_list) + batch_size - 1) // batch_size
+        log.info("Generating batch %d/%d (%d carousels)...", batch_num, total_batches, len(chunk))
 
-        # Rotate CTA options
-        if not used_cta_indices or len(used_cta_indices) >= len(cta_options):
-            used_cta_indices = []
-        available = [j for j in range(len(cta_options)) if j not in used_cta_indices]
-        cta_idx = random.choice(available)
-        used_cta_indices.append(cta_idx)
-        cta = cta_options[cta_idx]
+        user_msg = _generate_batch_prompt(chunk, cta_options)
+
+        def _generate():
+            raw = _call_llm_raw(prov, system_prompt, user_msg, api_key, model)
+            return _parse_batch_json(raw)
 
         try:
-            carousel = generate_carousel(
-                idea=idea,
-                provider=provider,
-                system_prompt=system_prompt,
-                api_key=api_key,
-                model=model,
-                cta_options=[cta],
-            )
-            carousel["idea"] = idea
-            carousels.append(carousel)
+            batch_results = retry(_generate, max_attempts=3, delay=5.0)
+            for i, carousel in enumerate(batch_results):
+                if batch_start + i < len(ideas_list):
+                    carousel["idea"] = ideas_list[batch_start + i]
+                carousels.append(carousel)
+            log.info("Batch %d: got %d carousels", batch_num, len(batch_results))
         except Exception as e:
-            log.error("Failed to generate carousel for '%s': %s", idea[:50], e)
-            continue
+            log.error("Batch %d failed: %s", batch_num, e)
+            # Fallback: generate one by one
+            for i, idea in enumerate(chunk):
+                try:
+                    carousel = generate_carousel(
+                        idea=idea, provider=provider,
+                        system_prompt=system_prompt, api_key=api_key,
+                        model=model, cta_options=cta_options,
+                    )
+                    carousel["idea"] = idea
+                    carousels.append(carousel)
+                except Exception as e2:
+                    log.error("Failed carousel '%s': %s", idea[:50], e2)
+                if i < len(chunk) - 1:
+                    time.sleep(delay_between)
 
-        # Delay between API calls to respect rate limits
-        if i < len(ideas) - 1:
+        # Delay between batches
+        if batch_start + batch_size < len(ideas_list):
             time.sleep(delay_between)
 
     return carousels
