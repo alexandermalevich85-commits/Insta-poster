@@ -364,8 +364,17 @@ with tab_queue:
 
     pending = load_json(PENDING_FILE, [])
 
+    # Sync button always visible
+    if st.button("🔄 Загрузить посты из GitHub"):
+        pulled = sync_from_github()
+        if pulled:
+            st.success(f"Загружено: {', '.join(pulled)}")
+            st.rerun()
+        else:
+            st.error("Ошибка загрузки. Проверьте GITHUB_TOKEN в секретах.")
+
     if not pending:
-        st.info("Очередь пуста. Сгенерируйте карусели на вкладке «Генерация».")
+        st.info("Очередь пуста. Нажмите кнопку выше чтобы загрузить посты из GitHub.")
     else:
         status_colors = {
             "pending": "🟡",
