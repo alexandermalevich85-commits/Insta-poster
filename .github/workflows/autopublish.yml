@@ -53,9 +53,11 @@ jobs:
         if: env.ACTION == 'publish' || github.event.schedule == '*/15 5-19 * * *'
         env:
           ACTION: ${{ github.event.inputs.action }}
+          IG_SESSION_DATA: ${{ secrets.IG_SESSION }}
+          IG_USERNAME: ${{ secrets.INSTAGRAPI_USERNAME }}
         run: |
-          if [ -n "${{ secrets.IG_SESSION }}" ]; then
-            echo '${{ secrets.IG_SESSION }}' > ig_session_${{ secrets.INSTAGRAPI_USERNAME }}.json
+          if [ -n "$IG_SESSION_DATA" ]; then
+            printf '%s' "$IG_SESSION_DATA" > "ig_session_${IG_USERNAME}.json"
           fi
 
       - name: Determine action
