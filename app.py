@@ -366,12 +366,28 @@ with tab_queue:
 
     # Sync button always visible
     if st.button("🔄 Загрузить посты из GitHub"):
-        pulled = sync_from_github()
-        if pulled:
-            st.success(f"Загружено: {', '.join(pulled)}")
-            st.rerun()
+        token = _get_github_token()
+        if not token:
+            st.error("GITHUB_TOKEN не найден в секретах! Добавьте его в Settings → Secrets.")
         else:
-            st.error("Ошибка загрузки. Проверьте GITHUB_TOKEN в секретах.")
+            st.info(f"Токен найден ({token[:10]}...), загружаю...")
+            try:
+                pulled = sync_from_github()
+                if pulled:
+                    # Check how many posts loaded
+                    new_pending = load_json(PENDING_FILE, [])
+                    st.success(f"Загружено: {', '.join(pulled)}. Постов в очереди: {len(new_pending)}")
+                    st.rerun()
+                else:
+                    # Debug: try manual request
+                    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/pending_posts.json"
+                    headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"}
+                    resp = requests.get(api_url, headers=headers)
+                    st.error(f"Ошибка загрузки. API статус: {resp.status_code}. Ответ: {resp.text[:300]}")
+            except Exception as e:
+                import traceback
+                st.error(f"Ошибка: {e}")
+                st.code(traceback.format_exc())
 
     if not pending:
         st.info("Очередь пуста. Нажмите кнопку выше чтобы загрузить посты из GitHub.")
