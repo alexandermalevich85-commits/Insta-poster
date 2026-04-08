@@ -1,10 +1,12 @@
 """Streamlit UI for Instagram carousel auto-poster."""
 
+import base64
 import json
 import os
 import sys
 import logging
 
+import requests
 import streamlit as st
 
 # Bridge Streamlit secrets to os.environ before importing config
@@ -43,6 +45,97 @@ def load_json(path, default=None):
 def save_json(path, data):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+# ── GitHub sync helpers ──────────────────────────────────────────────────────
+
+GITHUB_REPO = "alexandermalevich85-commits/Insta-poster"
+
+
+def _get_github_token() -> str | None:
+    """Get GitHub token from secrets or env."""
+    try:
+        return st.secrets.get("GITHUB_TOKEN")
+    except Exception:
+        pass
+    return os.getenv("GITHUB_TOKEN")
+
+
+def _github_push_file(file_path: str, commit_message: str) -> bool:
+    """Push a single file to GitHub repository via API."""
+    token = _get_github_token()
+    if not token:
+        return False
+
+    filename = os.path.basename(file_path)
+    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{filename}"
+    headers = {
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+
+    # Get current file SHA (needed for update)
+    resp = requests.get(api_url, headers=headers)
+    sha = resp.json().get("sha") if resp.status_code == 200 else None
+
+    # Read file content
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = base64.b64encode(f.read().encode()).decode()
+
+    data = {
+        "message": commit_message,
+        "content": content,
+    }
+    if sha:
+        data["sha"] = sha
+
+    resp = requests.put(api_url, headers=headers, json=data)
+    return resp.status_code in (200, 201)
+
+
+def _github_pull_file(filename: str, local_path: str) -> bool:
+    """Pull a file from GitHub repository via API."""
+    token = _get_github_token()
+    if not token:
+        return False
+
+    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{filename}"
+    headers = {
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+
+    resp = requests.get(api_url, headers=headers)
+    if resp.status_code != 200:
+        return False
+
+    content = base64.b64decode(resp.json()["content"]).decode()
+    with open(local_path, "w", encoding="utf-8") as f:
+        f.write(content)
+    return True
+
+
+def sync_from_github():
+    """Pull latest pending_posts.json, ideas.json, history.json from GitHub."""
+    pulled = []
+    for filename, path in [
+        ("pending_posts.json", PENDING_FILE),
+        ("ideas.json", IDEAS_FILE),
+        ("history.json", HISTORY_FILE),
+        ("prompts.json", PROMPTS_FILE),
+    ]:
+        if _github_pull_file(filename, path):
+            pulled.append(filename)
+    return pulled
+
+
+def sync_to_github(files: list[tuple[str, str]], message: str) -> list[str]:
+    """Push files to GitHub. Returns list of pushed filenames."""
+    pushed = []
+    for file_path, commit_msg in files:
+        if _github_push_file(file_path, commit_msg or message):
+            pushed.append(os.path.basename(file_path))
+    return pushed
 
 
 # ── Provider.cfg helpers ─────────────────────────────────────────────────────
@@ -151,6 +244,17 @@ with st.sidebar:
             if imgbb_key: os.environ["IMGBB_API_KEY"] = imgbb_key
 
         st.success("Настройки сохранены!")
+
+    st.divider()
+    st.subheader("Синхронизация с GitHub")
+
+    if st.button("Загрузить данные из GitHub"):
+        pulled = sync_from_github()
+        if pulled:
+            st.success(f"Загружено: {', '.join(pulled)}")
+            st.rerun()
+        else:
+            st.error("Не удалось. Проверьте GITHUB_TOKEN в секретах.")
 
 # ── Tabs ─────────────────────────────────────────────────────────────────────
 
@@ -328,6 +432,16 @@ with tab_queue:
                 save_json(PENDING_FILE, pending)
                 st.success("Очищено!")
                 st.rerun()
+        with col4:
+            if st.button("Сохранить очередь в GitHub"):
+                pushed = sync_to_github(
+                    [(PENDING_FILE, "Update pending posts from Streamlit UI")],
+                    "Update pending posts",
+                )
+                if pushed:
+                    st.success("Очередь отправлена в GitHub!")
+                else:
+                    st.error("Ошибка. Проверьте GITHUB_TOKEN.")
 
 
 # ── Tab 3: Preview ───────────────────────────────────────────────────────────
@@ -458,4 +572,14 @@ with tab_prompts:
         prompts["target_audience"] = new_audience
         prompts["cta_options"] = cta_options
         save_json(PROMPTS_FILE, prompts)
-        st.success("Промпты сохранены!")
+
+        # Auto-push to GitHub
+        pushed = sync_to_github(
+            [(PROMPTS_FILE, "Update prompts from Streamlit UI")],
+            "Update prompts",
+        )
+        if pushed:
+            st.success("Промпты сохранены и отправлены в GitHub!")
+        else:
+            st.success("Промпты сохранены локально.")
+            st.warning("Для синхронизации с GitHub добавьте GITHUB_TOKEN в секреты.")
