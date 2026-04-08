@@ -41,7 +41,7 @@ TEXT_MODELS = {
 
 DEFAULT_TEXT_MODELS = {
     "claude": "claude-sonnet-4-6",
-    "gemini": "gemini-2.0-flash",
+    "gemini": "gemini-2.5-flash",
     "openai": "gpt-4.1",
 }
 
