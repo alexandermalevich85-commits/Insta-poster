@@ -143,9 +143,12 @@ def publish_due_posts() -> int:
         try:
             cmd_publish_next()
             published_count += 1
-            # Pause between posts to avoid Instagram limits
+            # Pause 1-2 minutes between posts
             if published_count < max_per_run:
-                time.sleep(30)
+                import random
+                pause = random.randint(60, 120)
+                log.info("Waiting %d seconds before next post...", pause)
+                time.sleep(pause)
         except Exception as e:
             log.error("Error publishing: %s", e)
             break
