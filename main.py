@@ -226,7 +226,7 @@ def cmd_publish_next():
     target = None
     target_idx = None
     for i, post in enumerate(pending):
-        if post["status"] != "pending":
+        if post["status"] not in ("pending", "retry"):
             continue
         scheduled = post.get("scheduled_at")
         if not scheduled:
@@ -414,7 +414,7 @@ def cmd_render_test():
             "5.Начни делать легкое упражнение на поднятие кончика носа по 1 минуте в день. Это сохранит твои пропорции лица и не даст носу «состариться» раньше времени. А ты понимаешь, что твой нос меняет всё твое лицо?",
         ],
         "cta_text": "Напиши «КРАСОТА» в комменты — поделюсь своей системой естественного омоложения изнутри без дорогой косметики.",
-        "ps_text": "Возможно, мы больше никогда с тобой не увидимся - подписывайся @lana_surskaya и поделиться с подружкой",
+        "ps_text": "Возможно, мы больше никогда с тобой не увидимся - подпи sывайся @lana_surskaya и поделиться с подружкой",
     }
 
     output_dir = ensure_dir(os.path.join(TMP_DIR, "render_test"))
@@ -428,14 +428,30 @@ def cmd_render_test():
 
 
 def _build_caption(carousel: dict) -> str:
-    """Build Instagram caption from carousel data."""
+    """Build Instagram caption from carousel data — only CTA + P.S."""
     lines = []
-    lines.append(carousel.get("headline", ""))
+    cta_keyword = carousel.get("cta_keyword", "")
+    cta_text = carousel.get("cta_text", "")
+    ps_text = carousel.get("ps_text", "")
+
+    if cta_keyword and cta_text:
+        lines.append(f"‼️Напиши «{cta_keyword}» в комменты")
+        # cta_text may already contain the keyword intro — use the part after it
+        # Extract just the action/benefit part
+        cta_body = cta_text
+        # Remove "Напиши «X» в комменты" prefix if present
+        import re as _re
+        # Remove "Напиши «X» в комменты" anywhere in text
+        pattern = _re.compile(r'[Нн]апиши\s+[«"\']?' + _re.escape(cta_keyword) + r'[»"\']?\s+в комменты\s*', _re.IGNORECASE)
+        cta_body = pattern.sub('', cta_body).strip(" —-–,.")
+        if cta_body:
+            lines.append(f"- {cta_body}")
+    elif cta_text:
+        lines.append(cta_text)
+
     lines.append("")
-    for point in carousel.get("points", []):
-        lines.append(point)
-        lines.append("")
-    lines.append(carousel.get("cta_text", ""))
+    lines.append("P.s.: Возможно, мы больше никогда \nс тобой не увидимся - не забудь подпи sаtся ✏️ @lana_surskaya \nи поделиться с подружкой 😉")
+
     return "\n".join(lines).strip()
 
 
