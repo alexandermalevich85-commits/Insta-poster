@@ -23,10 +23,11 @@ TEXT_MODELS = {
         "claude-haiku-3-5-20241022",
     ],
     "gemini": [
-        "gemini-3.1-pro-preview",
-        "gemini-3-flash-preview",
-        "gemini-2.5-pro",
+        "gemini-2.0-flash",
         "gemini-2.5-flash",
+        "gemini-2.5-pro",
+        "gemini-3-flash-preview",
+        "gemini-3.1-pro-preview",
     ],
     "openai": [
         "gpt-4.1",
@@ -40,7 +41,7 @@ TEXT_MODELS = {
 
 DEFAULT_TEXT_MODELS = {
     "claude": "claude-sonnet-4-6",
-    "gemini": "gemini-2.5-flash",
+    "gemini": "gemini-2.0-flash",
     "openai": "gpt-4.1",
 }
 
@@ -88,7 +89,7 @@ def _call_llm_raw(
             except Exception as e:
                 err = str(e)
                 if "429" in err or "RESOURCE_EXHAUSTED" in err or "503" in err or "UNAVAILABLE" in err:
-                    wait = 40 * (attempt + 1)
+                    wait = 15 * (attempt + 1)
                     log.warning("Gemini error (%s), waiting %ds (attempt %d/5)...", err[:80], wait, attempt + 1)
                     time.sleep(wait)
                 else:
