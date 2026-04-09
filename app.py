@@ -413,13 +413,13 @@ with tab_queue:
             with col3:
                 st.write(post.get("headline", "")[:80])
             with col4:
-                if post.get("status") in ("failed", "schedule_failed"):
+                if post.get("status") in ("failed", "retry", "schedule_failed"):
                     if st.button("Повторить", key=f"retry_{i}"):
                         pending[i]["status"] = "pending"
                         pending[i]["error"] = None
                         save_json(PENDING_FILE, pending)
                         st.rerun()
-                if post.get("status") == "pending":
+                if post.get("status") in ("pending", "failed", "retry", "schedule_failed"):
                     if st.button("Удалить", key=f"del_{i}"):
                         pending.pop(i)
                         save_json(PENDING_FILE, pending)
@@ -427,7 +427,7 @@ with tab_queue:
 
         st.divider()
         if st.button("Очистить опубликованные"):
-            pending = [p for p in pending if p.get("status") not in ("published", "scheduled")]
+            pending = [p for p in pending if p.get("status") not in ("published", "scheduled", "failed")]
             save_json(PENDING_FILE, pending)
             st.success("Очищено!")
             st.rerun()
