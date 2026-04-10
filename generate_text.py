@@ -79,22 +79,32 @@ def _call_llm_raw(
     elif prov == "gemini":
         client = get_gemini_client(api_key_override=api_key)
         mdl = model or DEFAULT_TEXT_MODELS["gemini"]
-        for attempt in range(5):
-            try:
-                resp = client.models.generate_content(
-                    model=mdl,
-                    contents=f"{system_prompt}\n\n{user_message}",
-                )
-                return resp.text
-            except Exception as e:
-                err = str(e)
-                if "429" in err or "RESOURCE_EXHAUSTED" in err or "503" in err or "UNAVAILABLE" in err:
-                    wait = 15 * (attempt + 1)
-                    log.warning("Gemini error (%s), waiting %ds (attempt %d/5)...", err[:80], wait, attempt + 1)
-                    time.sleep(wait)
-                else:
-                    raise
-        raise RuntimeError("Gemini API failed after 5 retries")
+        fallback_models = [mdl, "gemini-2.0-flash", "gemini-2.0-flash-lite"]
+        # Remove duplicates while preserving order
+        seen = set()
+        fallback_models = [m for m in fallback_models if m not in seen and not seen.add(m)]
+
+        for model_name in fallback_models:
+            for attempt in range(5):
+                try:
+                    resp = client.models.generate_content(
+                        model=model_name,
+                        contents=f"{system_prompt}\n\n{user_message}",
+                    )
+                    if model_name != mdl:
+                        log.info("Using fallback model: %s", model_name)
+                    return resp.text
+                except Exception as e:
+                    err = str(e)
+                    if "429" in err or "RESOURCE_EXHAUSTED" in err or "503" in err or "UNAVAILABLE" in err:
+                        wait = 15 * (attempt + 1)
+                        log.warning("Gemini %s error (%s), waiting %ds (attempt %d/5)...",
+                                    model_name, err[:80], wait, attempt + 1)
+                        time.sleep(wait)
+                    else:
+                        raise
+            log.warning("Model %s failed after 5 retries, trying next fallback...", model_name)
+        raise RuntimeError("All Gemini models failed after retries")
     elif prov == "openai":
         import openai
         key = api_key or OPENAI_API_KEY
