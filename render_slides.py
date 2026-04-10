@@ -441,9 +441,7 @@ def render_slide_cover(headline: str, output_path: str) -> str:
             photo = photo.crop((0, top, photo.width, top + new_h))
         photo = photo.resize((SLIDE_WIDTH, SLIDE_HEIGHT), Image.LANCZOS)
 
-        # Add dark overlay for text readability
-        overlay = Image.new("RGBA", (SLIDE_WIDTH, SLIDE_HEIGHT), COVER_OVERLAY_COLOR)
-        img = Image.alpha_composite(photo, overlay)
+        img = photo
     else:
         # Fallback: plain background
         img = Image.new("RGBA", (SLIDE_WIDTH, SLIDE_HEIGHT), BG_COLOR)
@@ -456,10 +454,29 @@ def render_slide_cover(headline: str, output_path: str) -> str:
     return output_path
 
 
+def _fit_font(text: str, font_name: str, max_size: int, min_size: int,
+               area_top: int, area_bottom: int) -> ImageFont.FreeTypeFont:
+    """Find the largest font size that fits text in the given area."""
+    max_width = SLIDE_WIDTH - 2 * MARGIN_X
+    area_height = area_bottom - area_top
+
+    for size in range(max_size, min_size - 1, -2):
+        font = _get_font(font_name, size)
+        bbox = font.getbbox("Аy|")
+        line_height = bbox[3] - bbox[1]
+        spacing = int(line_height * 0.3)
+        lines = _wrap_text(text, font, max_width, target_h=line_height)
+        total_height = len(lines) * line_height + (len(lines) - 1) * spacing
+        if total_height <= area_height:
+            return font
+    return _get_font(font_name, min_size)
+
+
 def render_slide_content(point_text: str, output_path: str) -> str:
     """Render slides 2-6: numbered content point."""
     img, draw = _create_slide()
-    font = _get_font("evolventa_bold", CONTENT_FONT_SIZE)
+    font = _fit_font(point_text, "evolventa_bold", CONTENT_FONT_SIZE, 28,
+                     TEXT_AREA_TOP, TEXT_AREA_BOTTOM)
     _draw_centered_text(draw, point_text, font, TEXT_AREA_TOP, TEXT_AREA_BOTTOM, img=img)
     img.convert("RGB").save(output_path, "JPEG", quality=95)
     return output_path
