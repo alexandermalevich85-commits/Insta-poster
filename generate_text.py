@@ -172,16 +172,16 @@ def generate_carousel(
 
     data = retry(_generate, max_attempts=3, delay=2.0)
 
-    # Fill in CTA if not provided by LLM
-    if cta_options and ("cta_keyword" not in data or "cta_text" not in data):
+    # Always override CTA with one from cta_options (don't use LLM-generated keywords)
+    if cta_options:
         cta = random.choice(cta_options)
-        data.setdefault("cta_keyword", cta["keyword"])
-        data.setdefault("cta_text", cta["text"])
-        data.setdefault("ps_text", cta.get("ps", ""))
-    elif "cta_keyword" not in data:
-        data["cta_keyword"] = "КРАСОТА"
-        data["cta_text"] = "Напиши «КРАСОТА» в комменты — поделюсь своей системой естественного омоложения."
-        data["ps_text"] = "Возможно, мы больше никогда с тобой не увидимся - подпи sывайся ✏️✔️ @lana_surskaya и поделиться с подружкой 😉"
+        data["cta_keyword"] = cta["keyword"]
+        data["cta_text"] = cta["text"]
+        data["ps_text"] = cta.get("ps", "")
+    else:
+        data.setdefault("cta_keyword", "КРАСОТА")
+        data.setdefault("cta_text", "Напиши «КРАСОТА» в комменты — поделюсь своей системой естественного омоложения.")
+        data.setdefault("ps_text", "Возможно, мы больше никогда с тобой не увидимся - подпи sывайся ✏️✔️ @lana_surskaya и поделиться с подружкой 😉")
 
     return data
 
