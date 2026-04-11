@@ -79,41 +79,23 @@ def _call_llm_raw(
     elif prov == "gemini":
         client = get_gemini_client(api_key_override=api_key)
         mdl = model or DEFAULT_TEXT_MODELS["gemini"]
-        fallback_models = [mdl, "gemini-2.0-flash", "gemini-2.0-flash-lite"]
-        # Remove duplicates while preserving order
-        seen = set()
-        fallback_models = [m for m in fallback_models if m not in seen and not seen.add(m)]
-
-        for model_name in fallback_models:
-            max_attempts = 15 if model_name == mdl else 5
-            quota_exhausted = False
-            for attempt in range(max_attempts):
-                try:
-                    resp = client.models.generate_content(
-                        model=model_name,
-                        contents=f"{system_prompt}\n\n{user_message}",
-                    )
-                    if model_name != mdl:
-                        log.info("Using fallback model: %s", model_name)
-                    return resp.text
-                except Exception as e:
-                    err = str(e)
-                    if "429" in err or "RESOURCE_EXHAUSTED" in err:
-                        # Daily quota exhausted — switch to fallback immediately
-                        log.warning("Gemini %s quota exhausted (429), switching to fallback...", model_name)
-                        quota_exhausted = True
-                        break
-                    elif "503" in err or "UNAVAILABLE" in err:
-                        # Server overloaded — retry with wait
-                        wait = 30 * (attempt + 1)
-                        log.warning("Gemini %s overloaded (503), waiting %ds (attempt %d/%d)...",
-                                    model_name, wait, attempt + 1, max_attempts)
-                        time.sleep(wait)
-                    else:
-                        raise
-            if not quota_exhausted:
-                log.warning("Model %s failed after %d retries, trying next fallback...", model_name, max_attempts)
-        raise RuntimeError("All Gemini models failed after retries")
+        for attempt in range(15):
+            try:
+                resp = client.models.generate_content(
+                    model=mdl,
+                    contents=f"{system_prompt}\n\n{user_message}",
+                )
+                return resp.text
+            except Exception as e:
+                err = str(e)
+                if "429" in err or "RESOURCE_EXHAUSTED" in err or "503" in err or "UNAVAILABLE" in err:
+                    wait = 30 * (attempt + 1)
+                    log.warning("Gemini %s error (%s), waiting %ds (attempt %d/15)...",
+                                mdl, err[:80], wait, attempt + 1)
+                    time.sleep(wait)
+                else:
+                    raise
+        raise RuntimeError(f"Gemini {mdl} failed after 15 retries")
     elif prov == "openai":
         import openai
         key = api_key or OPENAI_API_KEY
@@ -256,7 +238,7 @@ def generate_carousel_batch(
     api_key: str | None = None,
     model: str | None = None,
     cta_options: list[dict] | None = None,
-    delay_between: float = 5.0,
+    delay_between: float = 30.0,
     batch_size: int = 2,
 ) -> list[dict]:
     """Generate a batch of carousels from ideas.
