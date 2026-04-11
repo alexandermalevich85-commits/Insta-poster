@@ -138,6 +138,43 @@ def _parse_carousel_json(raw: str) -> dict:
     return data
 
 
+_TOPIC_KEYWORDS = {
+    "ДЕТИ": [
+        "дет", "ребён", "ребен", "малыш", "истерик", "воспитан", "мам", "многодетн",
+        "капризн", "подросток", "школ", "садик", "сын", "дочь", "дочк", "младенец",
+        "новорожд", "родител", "няня", "грудн", "кормл",
+    ],
+    "КОРОЛЕВА": [
+        "психолог", "отношен", "мужчин", "мужик", "манипулят", "абьюз", "нарцисс",
+        "токсичн", "развод", "измен", "ревност", "обид", "самооценк", "уверенн",
+        "границ", "эмоци", "чувств", "тревожн", "депресси", "выгоран", "стресс",
+        "провокац", "конфликт", "ссор",
+    ],
+}
+
+
+def _match_cta_for_idea(idea: str, cta_options: list[dict]) -> dict:
+    """Pick the CTA that best matches the idea topic.
+
+    Rules:
+    - Children topics → ДЕТИ
+    - Psychology/relationships → КОРОЛЕВА
+    - Beauty/health (default) → КРАСОТА or ПАРАЛЛЕЛИ (random)
+    """
+    idea_lower = idea.lower()
+    by_keyword = {cta["keyword"]: cta for cta in cta_options}
+
+    for keyword, patterns in _TOPIC_KEYWORDS.items():
+        if keyword in by_keyword and any(p in idea_lower for p in patterns):
+            return by_keyword[keyword]
+
+    # Default: beauty — randomly pick КРАСОТА or ПАРАЛЛЕЛИ
+    beauty_ctas = [c for c in cta_options if c["keyword"] in ("КРАСОТА", "ПАРАЛЛЕЛИ")]
+    if beauty_ctas:
+        return random.choice(beauty_ctas)
+    return random.choice(cta_options)
+
+
 def generate_carousel(
     idea: str,
     provider: str | None = None,
@@ -175,7 +212,7 @@ def generate_carousel(
 
     # Always override CTA with one from cta_options (don't use LLM-generated keywords)
     if cta_options:
-        cta = random.choice(cta_options)
+        cta = _match_cta_for_idea(idea, cta_options)
         data["cta_keyword"] = cta["keyword"]
         data["cta_text"] = cta["text"]
         data["ps_text"] = cta.get("ps", "")
@@ -191,7 +228,7 @@ def _generate_batch_prompt(ideas_chunk: list[str], cta_options: list[dict]) -> s
     """Build a prompt to generate multiple carousels in one API call."""
     cta_examples = []
     for i, idea in enumerate(ideas_chunk):
-        cta = cta_options[i % len(cta_options)]
+        cta = _match_cta_for_idea(idea, cta_options)
         cta_examples.append(f'  Карусель {i+1}: тема: "{idea}", cta_keyword: "{cta["keyword"]}", cta_text: "{cta["text"]}", ps_text: "{cta.get("ps", "")}"')
 
     tasks = "\n".join(cta_examples)
