@@ -258,8 +258,8 @@ with st.sidebar:
 
 # ── Tabs ─────────────────────────────────────────────────────────────────────
 
-tab_gen, tab_queue, tab_preview, tab_history, tab_prompts = st.tabs(
-    ["Генерация", "Очередь", "Превью", "История", "Промпты"]
+tab_queue, tab_preview, tab_history, tab_prompts, tab_gen = st.tabs(
+    ["Очередь", "Превью", "История", "Промпты", "Генерация"]
 )
 
 
