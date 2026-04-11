@@ -238,7 +238,7 @@ def generate_carousel_batch(
     api_key: str | None = None,
     model: str | None = None,
     cta_options: list[dict] | None = None,
-    delay_between: float = 30.0,
+    delay_between: float = 60.0,
     batch_size: int = 2,
 ) -> list[dict]:
     """Generate a batch of carousels from ideas.
