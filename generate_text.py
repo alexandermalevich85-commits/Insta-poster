@@ -85,8 +85,8 @@ def _call_llm_raw(
         fallback_models = [m for m in fallback_models if m not in seen and not seen.add(m)]
 
         for model_name in fallback_models:
-            # Primary model gets 15 attempts (up to ~10 min), fallbacks get 5
             max_attempts = 15 if model_name == mdl else 5
+            quota_exhausted = False
             for attempt in range(max_attempts):
                 try:
                     resp = client.models.generate_content(
@@ -98,14 +98,21 @@ def _call_llm_raw(
                     return resp.text
                 except Exception as e:
                     err = str(e)
-                    if "429" in err or "RESOURCE_EXHAUSTED" in err or "503" in err or "UNAVAILABLE" in err:
-                        wait = 30 * (attempt + 1) if model_name == mdl else 15 * (attempt + 1)
-                        log.warning("Gemini %s error (%s), waiting %ds (attempt %d/%d)...",
-                                    model_name, err[:80], wait, attempt + 1, max_attempts)
+                    if "429" in err or "RESOURCE_EXHAUSTED" in err:
+                        # Daily quota exhausted — switch to fallback immediately
+                        log.warning("Gemini %s quota exhausted (429), switching to fallback...", model_name)
+                        quota_exhausted = True
+                        break
+                    elif "503" in err or "UNAVAILABLE" in err:
+                        # Server overloaded — retry with wait
+                        wait = 30 * (attempt + 1)
+                        log.warning("Gemini %s overloaded (503), waiting %ds (attempt %d/%d)...",
+                                    model_name, wait, attempt + 1, max_attempts)
                         time.sleep(wait)
                     else:
                         raise
-            log.warning("Model %s failed after %d retries, trying next fallback...", model_name, max_attempts)
+            if not quota_exhausted:
+                log.warning("Model %s failed after %d retries, trying next fallback...", model_name, max_attempts)
         raise RuntimeError("All Gemini models failed after retries")
     elif prov == "openai":
         import openai
