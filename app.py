@@ -246,16 +246,6 @@ with st.sidebar:
         st.success("Настройки сохранены!")
 
     st.divider()
-    st.subheader("Синхронизация с GitHub")
-
-    if st.button("Загрузить данные из GitHub"):
-        pulled = sync_from_github()
-        if pulled:
-            st.success(f"Загружено: {', '.join(pulled)}")
-            st.rerun()
-        else:
-            st.error("Не удалось. Проверьте GITHUB_TOKEN в секретах.")
-
 # ── Tabs ─────────────────────────────────────────────────────────────────────
 
 tab_queue, tab_preview, tab_history, tab_prompts, tab_gen = st.tabs(
