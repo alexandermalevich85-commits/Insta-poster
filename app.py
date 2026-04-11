@@ -494,7 +494,15 @@ with tab_preview:
                     p["caption"] = "\n\n".join([new_headline] + p["points"] + [new_cta])
                     break
             save_json(PENDING_FILE, pending)
-            st.success("Сохранено!")
+            pushed = sync_to_github(
+                [(PENDING_FILE, "Update post via Streamlit editor")],
+                "Update post via Streamlit editor",
+            )
+            if pushed:
+                st.success("Сохранено и отправлено в GitHub!")
+            else:
+                st.success("Сохранено локально.")
+                st.warning("Не удалось отправить в GitHub. Проверьте GITHUB_TOKEN.")
 
 
 # ── Tab 4: History ───────────────────────────────────────────────────────────
