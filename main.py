@@ -155,6 +155,10 @@ def cmd_generate():
         log.error("No ideas available for generation")
         return
 
+    # Pause after ideas generation to respect Gemini RPM limit
+    import time as _time
+    _time.sleep(60)
+
     # Generate carousels
     idea_texts = [text for _, text in unused]
     idea_indices = [idx for idx, _ in unused]
