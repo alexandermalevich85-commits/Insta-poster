@@ -395,7 +395,7 @@ with tab_queue:
             scheduled = post.get("scheduled_at", "")
             time_str = scheduled[11:16] if scheduled and len(scheduled) > 16 else "—"
 
-            col1, col2, col3, col4 = st.columns([0.5, 1, 5, 1.5])
+            col1, col2, col3, col4, col5 = st.columns([0.5, 1, 5, 1.2, 1.2])
             with col1:
                 st.write(status_icon)
             with col2:
@@ -403,6 +403,37 @@ with tab_queue:
             with col3:
                 st.write(post.get("headline", "")[:80])
             with col4:
+                if post.get("status") in ("pending", "failed", "retry", "schedule_failed"):
+                    if st.button("Отправить", key=f"pub_{i}"):
+                        with st.spinner("Публикация..."):
+                            try:
+                                from render_slides import render_carousel as _render
+                                from post_instagram import publish_carousel as _publish
+                                from main import add_history_entry, _build_caption
+                                import os as _os
+                                from utils import ensure_dir
+                                _out = ensure_dir(_os.path.join("tmp", post["id"]))
+                                _imgs = _render(post, _out)
+                                _caption = post.get("caption") or _build_caption(post)
+                                _res = _publish(_imgs, _caption, method=_os.getenv("IG_PUBLISH_METHOD"))
+                                _mid = _res.get("media_id")
+                                pending[i]["status"] = "published"
+                                pending[i]["published_at"] = __import__("datetime").datetime.now().isoformat()
+                                pending[i]["ig_media_id"] = _mid
+                                save_json(PENDING_FILE, pending)
+                                add_history_entry(post, _mid)
+                                sync_to_github(
+                                    [(PENDING_FILE, "Manual publish via Streamlit")],
+                                    "Manual publish via Streamlit",
+                                )
+                                st.success(f"Опубликовано!")
+                                st.rerun()
+                            except Exception as _e:
+                                pending[i]["status"] = "failed"
+                                pending[i]["error"] = str(_e)
+                                save_json(PENDING_FILE, pending)
+                                st.error(f"Ошибка: {_e}")
+            with col5:
                 if post.get("status") in ("failed", "retry", "schedule_failed"):
                     if st.button("Повторить", key=f"retry_{i}"):
                         pending[i]["status"] = "pending"
