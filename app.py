@@ -248,8 +248,8 @@ with st.sidebar:
     st.divider()
 # ── Tabs ─────────────────────────────────────────────────────────────────────
 
-tab_queue, tab_preview, tab_history, tab_prompts, tab_gen = st.tabs(
-    ["Очередь", "Превью", "История", "Промпты", "Генерация"]
+tab_queue, tab_preview, tab_prompts, tab_history, tab_gen = st.tabs(
+    ["Очередь", "Превью", "Промпты", "История", "Генерация"]
 )
 
 
