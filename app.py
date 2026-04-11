@@ -403,7 +403,8 @@ with tab_queue:
             with col3:
                 st.write(post.get("headline", "")[:80])
             with col4:
-                if post.get("status") in ("pending", "failed", "retry", "schedule_failed"):
+                _is_local = os.path.exists(os.path.join(os.path.dirname(__file__), "ig_session_lana_surskaya.json"))
+                if _is_local and post.get("status") in ("pending", "failed", "retry", "schedule_failed"):
                     if st.button("Отправить", key=f"pub_{i}"):
                         with st.spinner("Публикация..."):
                             try:
