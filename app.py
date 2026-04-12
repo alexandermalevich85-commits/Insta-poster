@@ -1,6 +1,5 @@
 """Streamlit UI for Instagram carousel auto-poster."""
 
-import base64
 import json
 import os
 import sys
@@ -49,70 +48,7 @@ def save_json(path, data):
 
 # ── GitHub sync helpers ──────────────────────────────────────────────────────
 
-GITHUB_REPO = "alexandermalevich85-commits/Insta-poster"
-
-
-def _get_github_token() -> str | None:
-    """Get GitHub token from secrets or env."""
-    try:
-        return st.secrets.get("GITHUB_TOKEN")
-    except Exception:
-        pass
-    return os.getenv("GITHUB_TOKEN")
-
-
-def _github_push_file(file_path: str, commit_message: str) -> bool:
-    """Push a single file to GitHub repository via API."""
-    token = _get_github_token()
-    if not token:
-        return False
-
-    filename = os.path.basename(file_path)
-    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{filename}"
-    headers = {
-        "Authorization": f"token {token}",
-        "Accept": "application/vnd.github.v3+json",
-    }
-
-    # Get current file SHA (needed for update)
-    resp = requests.get(api_url, headers=headers)
-    sha = resp.json().get("sha") if resp.status_code == 200 else None
-
-    # Read file content
-    with open(file_path, "r", encoding="utf-8") as f:
-        content = base64.b64encode(f.read().encode()).decode()
-
-    data = {
-        "message": commit_message,
-        "content": content,
-    }
-    if sha:
-        data["sha"] = sha
-
-    resp = requests.put(api_url, headers=headers, json=data)
-    return resp.status_code in (200, 201)
-
-
-def _github_pull_file(filename: str, local_path: str) -> bool:
-    """Pull a file from GitHub repository via API."""
-    token = _get_github_token()
-    if not token:
-        return False
-
-    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{filename}"
-    headers = {
-        "Authorization": f"token {token}",
-        "Accept": "application/vnd.github.v3+json",
-    }
-
-    resp = requests.get(api_url, headers=headers)
-    if resp.status_code != 200:
-        return False
-
-    content = base64.b64decode(resp.json()["content"]).decode()
-    with open(local_path, "w", encoding="utf-8") as f:
-        f.write(content)
-    return True
+from github_sync import push_file as _github_push_file, pull_file as _github_pull_file, GITHUB_REPO, _get_github_token
 
 
 def sync_from_github():
