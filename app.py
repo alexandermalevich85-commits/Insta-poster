@@ -475,13 +475,13 @@ with tab_history:
     else:
         st.metric("Всего опубликовано", len(history))
 
-        for entry in reversed(history[-50:]):
+        for idx, entry in enumerate(reversed(history[-50:])):
             with st.expander(f"📅 {entry.get('date', '')[:10]} — {entry.get('headline', '')[:60]}"):
                 st.write(f"**Тема:** {entry.get('topic', '—')}")
                 st.write(f"**Провайдер:** {entry.get('text_provider', '—')}")
                 st.write(f"**IG Media ID:** {entry.get('ig_media_id', '—')}")
                 if entry.get("caption"):
-                    st.text_area("Caption", value=entry["caption"], disabled=True, key=f"hist_{entry.get('id', '')}")
+                    st.text_area("Caption", value=entry["caption"], disabled=True, key=f"hist_{idx}_{entry.get('id', '')}")
 
 
 # ── Tab 5: Prompts ───────────────────────────────────────────────────────────
