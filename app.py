@@ -396,16 +396,16 @@ with tab_queue:
 with tab_preview:
     st.header("Превью карусели")
 
-    pending = load_json(PENDING_FILE, [])
-    pending_items = [p for p in pending if p.get("status") == "pending"]
+    all_posts = load_json(PENDING_FILE, [])
 
-    if not pending_items:
+    if not all_posts:
         st.info("Нет карусельных постов для превью.")
     else:
-        options = [f"{p['id']} — {p['headline'][:50]}..." for p in pending_items]
+        status_icons = {"pending": "🟡", "published": "🟢", "failed": "🔴", "scheduled": "🔵"}
+        options = [f"{status_icons.get(p.get('status',''), '⚪')} {p['id']} — {p['headline'][:50]}..." for p in all_posts]
         selected_idx = st.selectbox("Выберите карусель", range(len(options)), format_func=lambda x: options[x])
 
-        selected = pending_items[selected_idx]
+        selected = all_posts[selected_idx]
 
         # Render slides
         if st.button("Отрендерить превью", type="primary"):
