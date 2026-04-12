@@ -96,6 +96,8 @@ def generate_daily_posts():
     try:
         cmd_generate()
         log.info("Daily posts generated successfully!")
+        # Push new posts to GitHub
+        github_push()
     except Exception as e:
         log.error("Failed to generate posts: %s", e)
 
@@ -141,16 +143,19 @@ def publish_due_posts() -> int:
 
 
 def run_cycle():
-    """One full cycle: pull from GitHub + publish due posts + push results."""
+    """One full cycle: pull from GitHub + generate if needed + publish + push."""
     # Step 1: Pull latest data from GitHub via API (no git conflicts)
     github_pull()
 
-    # Step 2: Publish any due posts
+    # Step 2: Generate posts for today if none exist
+    generate_daily_posts()
+
+    # Step 3: Publish any due posts
     published = publish_due_posts()
 
     if published:
         log.info("Published %d post(s).", published)
-        # Step 3: Push updated statuses to GitHub via API
+        # Step 4: Push updated statuses to GitHub via API
         github_push()
     else:
         now = datetime.now().strftime("%H:%M")
