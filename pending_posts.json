@@ -47,7 +47,7 @@
   },
   {
     "id": "3262546a",
-    "status": "pending",
+    "status": "published",
     "created_at": "2026-04-12T12:23:56.578898",
     "scheduled_at": "2026-04-12T09:25:00+03:00",
     "topic": "",
@@ -65,12 +65,12 @@
     "caption": "‼️Напиши «КОРОЛЕВА» в комменты\n- научу отвечать на любые провокации так, чтобы мужчина тебя зауважал\n\nP.s.: Возможно, мы больше никогда \nс тобой не увидимся - не забудь подпи sаtся ✏️ @lana_surskaya \nи поделиться с подружкой 😉",
     "text_provider": "gemini",
     "idea": "Та, что перестала жаловаться на жизнь 21 день, получила неожиданный комплимент от мужа и прилив энергии (семейный психолог считает это чудом).",
-    "published_at": null,
-    "ig_media_id": null
+    "published_at": "2026-04-12T12:52:44.375046",
+    "ig_media_id": "3873586812405855662_2096060607"
   },
   {
     "id": "b08ba0fe",
-    "status": "pending",
+    "status": "published",
     "created_at": "2026-04-12T12:23:56.579281",
     "scheduled_at": "2026-04-12T10:01:00+03:00",
     "topic": "",
@@ -88,12 +88,12 @@
     "caption": "‼️Напиши «ДЕТИ» в комменты\n- скину свой опыт многодетной мамы\n\nP.s.: Возможно, мы больше никогда \nс тобой не увидимся - не забудь подпи sаtся ✏️ @lana_surskaya \nи поделиться с подружкой 😉",
     "text_provider": "gemini",
     "idea": "Мамы, которые НЕ вмешиваются в детские ссоры 5 минут, видят, как дети сами договариваются и учатся дружить (детский психолог назвал это \"волшебством\").",
-    "published_at": null,
-    "ig_media_id": null
+    "published_at": "2026-04-12T12:57:31.970638",
+    "ig_media_id": "3873589207940646730_2096060607"
   },
   {
     "id": "4b519e61",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-04-12T12:23:56.579699",
     "scheduled_at": "2026-04-12T10:45:00+03:00",
     "topic": "",
@@ -112,7 +112,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, что \"забыли\" о креме для глаз на 10 дней, заметили, как их морщины стали менее заметны (косметологи скрывают силу естественной защиты кожи).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "ConnectionError HTTPSConnectionPool(host='i.instagram.com', port=443): Max retries exceeded with url: /api/v1/launcher/sync/ (Caused by ReadTimeoutError(\"HTTPSConnectionPool(host='i.instagram.com', port=443): Read timed out. (read timeout=None)\"))"
   },
   {
     "id": "24aa82d8",
