@@ -147,10 +147,7 @@ def run_cycle():
     # Step 1: Pull latest data from GitHub via API (no git conflicts)
     github_pull()
 
-    # Step 2: Generate posts for today if none exist
-    generate_daily_posts()
-
-    # Step 3: Publish any due posts
+    # Step 2: Publish any due posts
     published = publish_due_posts()
 
     if published:
