@@ -42,9 +42,13 @@ def push_file(file_path: str, commit_message: str) -> bool:
         "Accept": "application/vnd.github.v3+json",
     }
 
-    # Get current file SHA (needed for update)
-    resp = requests.get(api_url, headers=headers)
-    sha = resp.json().get("sha") if resp.status_code == 200 else None
+    try:
+        # Get current file SHA (needed for update)
+        resp = requests.get(api_url, headers=headers, timeout=10)
+        sha = resp.json().get("sha") if resp.status_code == 200 else None
+    except requests.ConnectionError:
+        log.warning("No internet connection, skipping push of %s", filename)
+        return False
 
     # Read file content
     with open(file_path, "r", encoding="utf-8") as f:
@@ -57,7 +61,12 @@ def push_file(file_path: str, commit_message: str) -> bool:
     if sha:
         data["sha"] = sha
 
-    resp = requests.put(api_url, headers=headers, json=data)
+    try:
+        resp = requests.put(api_url, headers=headers, json=data, timeout=10)
+    except requests.ConnectionError:
+        log.warning("No internet connection, skipping push of %s", filename)
+        return False
+
     if resp.status_code in (200, 201):
         log.info("Pushed %s to GitHub", filename)
         return True
@@ -79,7 +88,12 @@ def pull_file(filename: str, local_path: str) -> bool:
         "Accept": "application/vnd.github.v3+json",
     }
 
-    resp = requests.get(api_url, headers=headers)
+    try:
+        resp = requests.get(api_url, headers=headers, timeout=10)
+    except requests.ConnectionError:
+        log.warning("No internet connection, skipping pull of %s", filename)
+        return False
+
     if resp.status_code != 200:
         log.warning("Failed to pull %s: %s", filename, resp.status_code)
         return False
