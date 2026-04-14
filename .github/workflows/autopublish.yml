@@ -4,8 +4,6 @@ on:
   schedule:
     # Generate batch at 05:00 MSK (02:00 UTC)
     - cron: '0 2 * * *'
-    # Publish checks every 15 minutes from 08:00 to 22:00 MSK (05:00-19:00 UTC)
-    - cron: '*/15 5-19 * * *'
   workflow_dispatch:
     inputs:
       action:
@@ -15,21 +13,17 @@ on:
         type: choice
         options:
           - generate
-          - publish
 
 env:
   TEXT_PROVIDER: 'gemini'
   GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-  IG_PUBLISH_METHOD: 'instagrapi'
-  INSTAGRAPI_USERNAME: ${{ secrets.INSTAGRAPI_USERNAME }}
-  INSTAGRAPI_PASSWORD: ${{ secrets.INSTAGRAPI_PASSWORD }}
   POSTS_PER_DAY: '20'
   PUBLISH_START_HOUR: '8'
   PUBLISH_END_HOUR: '22'
   TIMEZONE: 'Europe/Moscow'
 
 jobs:
-  run:
+  generate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -49,35 +43,8 @@ jobs:
           cp fonts/*.ttf ~/.fonts/
           fc-cache -f -v
 
-      - name: Restore Instagram session
-        if: env.ACTION == 'publish' || github.event.schedule == '*/15 5-19 * * *'
-        env:
-          ACTION: ${{ github.event.inputs.action }}
-          IG_SESSION_DATA: ${{ secrets.IG_SESSION }}
-          IG_USERNAME: ${{ secrets.INSTAGRAPI_USERNAME }}
-        run: |
-          if [ -n "$IG_SESSION_DATA" ]; then
-            printf '%s' "$IG_SESSION_DATA" > "ig_session_${IG_USERNAME}.json"
-          fi
-
-      - name: Determine action
-        id: action
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "cmd=${{ github.event.inputs.action }}" >> $GITHUB_OUTPUT
-          elif [ "${{ github.event.schedule }}" == "0 2 * * *" ]; then
-            echo "cmd=generate" >> $GITHUB_OUTPUT
-          else
-            echo "cmd=publish" >> $GITHUB_OUTPUT
-          fi
-
       - name: Generate carousels
-        if: steps.action.outputs.cmd == 'generate'
         run: python main.py generate
-
-      - name: Publish next post
-        if: steps.action.outputs.cmd == 'publish'
-        run: python main.py publish_next
 
       - name: Commit changes
         run: |
@@ -85,5 +52,5 @@ jobs:
           git config user.email "actions@github.com"
           git pull --rebase origin main || true
           git add pending_posts.json ideas.json history.json 2>/dev/null || true
-          git diff --staged --quiet || git commit -m "Auto: ${{ steps.action.outputs.cmd }} $(date +%Y-%m-%d_%H:%M)"
+          git diff --staged --quiet || git commit -m "Auto: generate $(date +%Y-%m-%d_%H:%M)"
           git push origin main || echo "Push failed"
