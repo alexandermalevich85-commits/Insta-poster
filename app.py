@@ -354,11 +354,10 @@ with tab_queue:
                                 _caption = post.get("caption") or _build_caption(post)
                                 _res = _publish(_imgs, _caption, method=_os.getenv("IG_PUBLISH_METHOD"))
                                 _mid = _res.get("media_id")
-                                pending[i]["status"] = "published"
-                                pending[i]["published_at"] = __import__("datetime").datetime.now().isoformat()
-                                pending[i]["ig_media_id"] = _mid
-                                save_json(PENDING_FILE, pending)
                                 add_history_entry(post, _mid)
+                                # Remove from pending so autopublish won't re-publish
+                                pending.pop(i)
+                                save_json(PENDING_FILE, pending)
                                 sync_to_github(
                                     [(PENDING_FILE, "Manual publish via Streamlit")],
                                     "Manual publish via Streamlit",
@@ -381,12 +380,20 @@ with tab_queue:
                     if st.button("Удалить", key=f"del_{i}"):
                         pending.pop(i)
                         save_json(PENDING_FILE, pending)
+                        sync_to_github(
+                            [(PENDING_FILE, "Delete post via Streamlit")],
+                            "Delete post via Streamlit",
+                        )
                         st.rerun()
 
         st.divider()
         if st.button("Очистить опубликованные"):
             pending = [p for p in pending if p.get("status") not in ("published", "scheduled", "failed")]
             save_json(PENDING_FILE, pending)
+            sync_to_github(
+                [(PENDING_FILE, "Clear published posts via Streamlit")],
+                "Clear published posts via Streamlit",
+            )
             st.success("Очищено!")
             st.rerun()
 
