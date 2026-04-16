@@ -70,7 +70,7 @@
   },
   {
     "id": "e7c4ab94",
-    "status": "pending",
+    "status": "published",
     "created_at": "2026-04-16T05:26:41.077760",
     "scheduled_at": "2026-04-16T10:10:00+03:00",
     "topic": "",
@@ -88,12 +88,12 @@
     "caption": "‼️Напиши «КОРОЛЕВА» в комменты\n- научу отвечать на любые провокации так, чтобы мужчина тебя зауважал\n\nP.s.: Возможно, мы больше никогда \nс тобой не увидимся - не забудь подпи sаtся ✏️ @lana_surskaya \nи поделиться с подружкой 😉",
     "text_provider": "gemini",
     "idea": "Та, кто перестала постоянно \"извиняться\" в 35 лет, почувствовала себя увереннее на 80% за полгода (коучи по самооценке шокированы результатом).",
-    "published_at": null,
-    "ig_media_id": null
+    "published_at": "2026-04-16T11:58:56.846128",
+    "ig_media_id": "3876458840695648132_2096060607"
   },
   {
     "id": "ad5fd278",
-    "status": "pending",
+    "status": "published",
     "created_at": "2026-04-16T05:26:41.078528",
     "scheduled_at": "2026-04-16T10:46:00+03:00",
     "topic": "",
@@ -111,12 +111,12 @@
     "caption": "‼️Напиши «КРАСОТА» в комменты\n- поделюсь своей системой естественного омоложения изнутри без дорогой косметики\n\nP.s.: Возможно, мы больше никогда \nс тобой не увидимся - не забудь подпи sаtся ✏️ @lana_surskaya \nи поделиться с подружкой 😉",
     "text_provider": "gemini",
     "idea": "Женщины, что перестали использовать обычное мыло для лица, выглядят на 7 лет моложе к 50 годам (дерматологи предупреждают о щелочном барьере).",
-    "published_at": null,
-    "ig_media_id": null
+    "published_at": "2026-04-16T12:03:30.129874",
+    "ig_media_id": "3876461128210359471_2096060607"
   },
   {
     "id": "ef8ee861",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-04-16T05:26:41.079442",
     "scheduled_at": "2026-04-16T11:33:00+03:00",
     "topic": "",
@@ -135,7 +135,8 @@
     "text_provider": "gemini",
     "idea": "Родители, которые разрешили ребенку \"скучать\" 30 минут в день, получили креативного и самостоятельного малыша за месяц (детские педагоги подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "ConnectionError HTTPSConnectionPool(host='i.instagram.com', port=443): Max retries exceeded with url: /api/v1/launcher/sync/ (Caused by ReadTimeoutError(\"HTTPSConnectionPool(host='i.instagram.com', port=443): Read timed out. (read timeout=None)\"))"
   },
   {
     "id": "a20e2b69",
