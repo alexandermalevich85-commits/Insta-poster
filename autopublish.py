@@ -144,19 +144,34 @@ def publish_due_posts() -> int:
 
 def run_cycle():
     """One full cycle: pull from GitHub + generate if needed + publish + push."""
+    from config import TIMEZONE
+
     # Step 1: Pull latest data from GitHub via API (no git conflicts)
     github_pull()
 
-    # Step 2: Publish any due posts
+    # Step 2: Fallback generation — only if GitHub Actions failed AND it's past 10:00 MSK
+    # GitHub Actions generates at 05:00 MSK; if by 10:00 there are still no posts, generate locally.
+    tz = pytz.timezone(TIMEZONE)
+    now_local = datetime.now(tz)
+    if now_local.hour >= 10 and not has_pending_for_today():
+        log.warning("No posts for today and it's past 10:00 — GitHub Actions may have failed. Generating locally as fallback...")
+        try:
+            from main import cmd_generate
+            cmd_generate()
+            log.info("Fallback generation complete.")
+            github_push()
+        except Exception as e:
+            log.error("Fallback generation failed: %s", e)
+
+    # Step 3: Publish any due posts
     published = publish_due_posts()
 
     if published:
         log.info("Published %d post(s).", published)
-        # Step 4: Push updated statuses to GitHub via API
+        # Push updated statuses to GitHub via API
         github_push()
     else:
-        now = datetime.now().strftime("%H:%M")
-        log.info("No posts due at %s.", now)
+        log.info("No posts due at %s.", now_local.strftime("%H:%M"))
 
 
 def main():
