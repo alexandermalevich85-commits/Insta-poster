@@ -193,28 +193,12 @@ def main():
         log.info("Published %d post(s).", published)
         return
 
-    # Full auto-pilot loop
-    log.info("=" * 50)
-    log.info("INSTA-POSTER AUTO-PILOT")
-    log.info("Checking every %d minutes", interval_min)
-    log.info("Press Ctrl+C to stop")
-    log.info("=" * 50)
-
-    while True:
-        try:
-            run_cycle()
-        except KeyboardInterrupt:
-            log.info("Stopped by user.")
-            break
-        except Exception as e:
-            log.error("Unexpected error: %s", e)
-
-        log.info("Next check in %d min...\n", interval_min)
-        try:
-            time.sleep(interval_min * 60)
-        except KeyboardInterrupt:
-            log.info("Stopped by user.")
-            break
+    # Single run — LaunchAgent restarts every 10 min via StartInterval.
+    # This ensures code changes take effect immediately on next invocation.
+    try:
+        run_cycle()
+    except Exception as e:
+        log.error("Unexpected error in run_cycle: %s", e)
 
 
 if __name__ == "__main__":
