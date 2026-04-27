@@ -1,7 +1,7 @@
 [
   {
     "id": "db5c598c",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-04-19T04:57:11.129720",
     "scheduled_at": "2026-04-19T10:48:00+03:00",
     "topic": "",
@@ -20,11 +20,12 @@
     "text_provider": "gemini",
     "idea": "Та, кто начала есть 1 ложку льняного семени в день 3 недели, забыла о запорах и чувствует легкость в 45 лет (гастроэнтерологи кивают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Only photo or video can be accepted as media type."
   },
   {
     "id": "5d967ac7",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-04-19T04:57:11.129729",
     "scheduled_at": "2026-04-19T11:27:00+03:00",
     "topic": "",
@@ -43,11 +44,12 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые перестали пить газировку 2 месяца, снизили давление на 10 мм рт. ст. и потеряли 5 кг (кардиологи удивлены).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Only photo or video can be accepted as media type."
   },
   {
     "id": "5f6cf101",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-04-19T04:57:11.130026",
     "scheduled_at": "2026-04-19T12:11:00+03:00",
     "topic": "",
@@ -66,11 +68,12 @@
     "text_provider": "gemini",
     "idea": "Она начала ходить по лестнице 10 минут в день — и боли в коленях исчезли за месяц, а энергия как в 30 (ортопеды молчат).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Only photo or video can be accepted as media type."
   },
   {
     "id": "56d66c1c",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-04-19T04:57:11.130052",
     "scheduled_at": "2026-04-19T12:59:00+03:00",
     "topic": "",
@@ -89,11 +92,12 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые начали пить 1 стакан теплой воды с щепоткой куркумы утром, забыли о хронических воспалениях за месяц (ревматологи удивляются).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Only photo or video can be accepted as media type."
   },
   {
     "id": "eb6bf016",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-04-19T04:57:11.130070",
     "scheduled_at": "2026-04-19T13:32:00+03:00",
     "topic": "",
@@ -112,7 +116,8 @@
     "text_provider": "gemini",
     "idea": "Она стала спать на жестком матрасе 1 месяц — и боли в пояснице исчезли, а осанка улучшилась на 20% (мануальные терапевты одобряют).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Only photo or video can be accepted as media type."
   },
   {
     "id": "7e6619dd",
