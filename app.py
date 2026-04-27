@@ -362,13 +362,14 @@ with tab_queue:
 
     pending = load_json(PENDING_FILE, [])
 
-    # ── Today's plan summary ──────────────────────────────────────────────────
-    from datetime import datetime as _dt, date as _d
+    # ── Today's & tomorrow's plan summary ─────────────────────────────────────
+    from datetime import datetime as _dt, date as _d, timedelta as _td
     import pytz as _pytz
     _tz = _pytz.timezone(TIMEZONE)
     _today = _dt.now(_tz).date()
+    _tomorrow = _today + _td(days=1)
 
-    _today_posts = []
+    _by_day: dict = {}  # date -> list of (post, sched_dt)
     for _p in pending:
         _sched = _p.get("scheduled_at")
         if not _sched:
@@ -377,28 +378,52 @@ with tab_queue:
             _sd = _dt.fromisoformat(_sched)
             if _sd.tzinfo is None:
                 _sd = _tz.localize(_sd)
-            if _sd.date() == _today:
-                _today_posts.append((_p, _sd))
+            _by_day.setdefault(_sd.date(), []).append((_p, _sd))
         except Exception:
             pass
-    _today_posts.sort(key=lambda x: x[1])
+    for _d_key in _by_day:
+        _by_day[_d_key].sort(key=lambda x: x[1])
 
-    if _today_posts:
-        _published = sum(1 for p, _ in _today_posts if p.get("status") == "published")
-        _scheduled = sum(1 for p, _ in _today_posts if p.get("status") == "scheduled")
-        _pending_cnt = sum(1 for p, _ in _today_posts if p.get("status") == "pending")
+    _icon_map = {"published": "✅", "scheduled": "🕐", "pending": "🟡", "failed": "❌", "schedule_failed": "❌", "expired": "⏭️"}
 
+    def _render_day_block(label: str, the_date, posts):
+        if not posts:
+            return
+        published = sum(1 for p, _ in posts if p.get("status") == "published")
+        scheduled = sum(1 for p, _ in posts if p.get("status") == "scheduled")
+        pending_cnt = sum(1 for p, _ in posts if p.get("status") == "pending")
         c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Сегодня всего", len(_today_posts))
-        c2.metric("Опубликовано", _published)
-        c3.metric("Запланировано", _scheduled)
-        c4.metric("В ожидании", _pending_cnt)
+        c1.metric(f"{label} всего", len(posts))
+        c2.metric("Опубликовано", published)
+        c3.metric("Запланировано в IG", scheduled)
+        c4.metric("В ожидании", pending_cnt)
+        with st.expander(f"📅 {label} ({the_date.strftime('%d.%m.%Y')}) — план"):
+            for p, sd in posts:
+                status = p.get("status", "")
+                ico = _icon_map.get(status, "⚪")
+                st.write(f"{ico} **{sd.strftime('%H:%M')}** — {p.get('headline','')[:80]} _({status})_")
 
-        with st.expander(f"📅 План на сегодня ({_today.strftime('%d.%m.%Y')})"):
-            for _p, _sd in _today_posts:
-                _status = _p.get("status", "")
-                _icon = {"published": "✅", "scheduled": "🕐", "pending": "🟡", "failed": "❌"}.get(_status, "⚪")
-                st.write(f"{_icon} **{_sd.strftime('%H:%M')}** — {_p.get('headline','')[:80]} _({_status})_")
+    _today_posts = _by_day.get(_today, [])
+    _tomorrow_posts = _by_day.get(_tomorrow, [])
+
+    if _today_posts or _tomorrow_posts:
+        st.subheader("Сегодня")
+        _render_day_block("Сегодня", _today, _today_posts) if _today_posts else st.caption("Постов на сегодня нет.")
+
+        st.subheader("Завтра")
+        _render_day_block("Завтра", _tomorrow, _tomorrow_posts) if _tomorrow_posts else st.caption("Постов на завтра ещё нет — будут созданы автогенерацией в 05:00 МСК.")
+
+        # Future days (later than tomorrow)
+        _later_dates = sorted(d for d in _by_day if d > _tomorrow)
+        if _later_dates:
+            with st.expander(f"📆 Дальше ({len(_later_dates)} дн.)"):
+                for d in _later_dates:
+                    posts = _by_day[d]
+                    st.markdown(f"**{d.strftime('%d.%m.%Y')}** — {len(posts)} пост(ов)")
+                    for p, sd in posts:
+                        status = p.get("status", "")
+                        ico = _icon_map.get(status, "⚪")
+                        st.write(f"  {ico} {sd.strftime('%H:%M')} — {p.get('headline','')[:80]} _({status})_")
         st.divider()
     # ─────────────────────────────────────────────────────────────────────────
 
