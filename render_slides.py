@@ -482,11 +482,16 @@ def render_slide_content(point_text: str, output_path: str) -> str:
     return output_path
 
 
+DEFAULT_CTA_TEXT = "Сохрани этот пост, чтобы не потерять. Поделись с подругой!"
+DEFAULT_PS_TEXT = "Подпишись, чтобы не пропустить новые разборы."
+
+
 def render_slide_cta(cta_text: str, output_path: str) -> str:
     """Render slide 7: CTA with emoji prefix."""
+    text = (cta_text or "").strip() or DEFAULT_CTA_TEXT
     img, draw = _create_slide()
     font = _get_font("evolventa_bold", CTA_FONT_SIZE)
-    full_text = f"‼️ {cta_text}"
+    full_text = f"‼️ {text}"
     _draw_centered_text(draw, full_text, font, TEXT_AREA_TOP, TEXT_AREA_BOTTOM, img=img)
     img.convert("RGB").save(output_path, "JPEG", quality=95)
     return output_path
@@ -494,9 +499,10 @@ def render_slide_cta(cta_text: str, output_path: str) -> str:
 
 def render_slide_ps(ps_text: str, output_path: str) -> str:
     """Render slide 8: P.S. text."""
+    text = (ps_text or "").strip() or DEFAULT_PS_TEXT
     img, draw = _create_slide()
     font = _get_font("evolventa_bold", PS_FONT_SIZE)
-    full_text = f"P.s.: {ps_text}"
+    full_text = f"P.s.: {text}"
     _draw_centered_text(draw, full_text, font, TEXT_AREA_TOP, TEXT_AREA_BOTTOM, img=img)
     img.convert("RGB").save(output_path, "JPEG", quality=95)
     return output_path

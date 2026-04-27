@@ -259,13 +259,22 @@ def _parse_batch_json(raw: str) -> list[dict]:
 
     results = []
     for item in data:
-        if "headline" in item and "points" in item:
-            if isinstance(item["points"], list) and len(item["points"]) == 5:
-                results.append(item)
-            else:
-                log.warning("Skipping carousel with %d points", len(item.get("points", [])))
-        else:
+        if "headline" not in item or "points" not in item:
             log.warning("Skipping carousel without headline/points")
+            continue
+        if not isinstance(item["points"], list) or len(item["points"]) != 5:
+            log.warning("Skipping carousel with %d points", len(item.get("points", [])))
+            continue
+        # Validate / fallback for CTA + PS — Gemini occasionally returns empty
+        # strings here, which causes blank "‼️" / "P.s.:" slides. Keep the
+        # carousel but log so we can spot bad outputs.
+        if not (item.get("cta_text") or "").strip():
+            log.warning("Carousel '%s' has empty cta_text — will use default", item.get("headline", "")[:50])
+            item["cta_text"] = "Сохрани этот пост, чтобы не потерять. Поделись с подругой!"
+        if not (item.get("ps_text") or "").strip():
+            log.warning("Carousel '%s' has empty ps_text — will use default", item.get("headline", "")[:50])
+            item["ps_text"] = "Подпишись, чтобы не пропустить новые разборы."
+        results.append(item)
     return results
 
 
