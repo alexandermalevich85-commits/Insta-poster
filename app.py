@@ -349,13 +349,46 @@ with tab_queue:
 
     # GitHub connection status — must be configured in Streamlit Cloud Secrets
     _gh_token = _get_github_token()
+
+    # Debug info — what does Streamlit actually see?
+    with st.expander("🔍 Диагностика подключения GitHub", expanded=not _gh_token):
+        _env_token = os.getenv("GITHUB_TOKEN")
+        _secrets_token = None
+        try:
+            _secrets_token = st.secrets.get("GITHUB_TOKEN") if hasattr(st, 'secrets') else None
+        except Exception as _e:
+            st.write(f"st.secrets ошибка: `{_e}`")
+
+        st.write(f"- В переменной окружения GITHUB_TOKEN: {'✅ ' + _env_token[:8] + '...' if _env_token else '❌ нет'}")
+        st.write(f"- В st.secrets[GITHUB_TOKEN]: {'✅ ' + _secrets_token[:8] + '...' if _secrets_token else '❌ нет'}")
+        try:
+            _all_secret_keys = list(st.secrets.keys()) if hasattr(st, 'secrets') else []
+            st.write(f"- Все ключи в st.secrets: `{_all_secret_keys}`")
+        except Exception as _e:
+            st.write(f"- Список секретов недоступен: `{_e}`")
+
+        if _gh_token:
+            # Live check: try to actually fetch a file
+            import requests as _r
+            try:
+                _r2 = _r.get(
+                    f"https://api.github.com/repos/{GITHUB_REPO}/contents/pending_posts.json",
+                    headers={"Authorization": f"token {_gh_token}"},
+                    timeout=10,
+                )
+                st.write(f"- Тест запроса: HTTP **{_r2.status_code}**")
+                if _r2.status_code != 200:
+                    st.code(_r2.text[:400])
+            except Exception as _e:
+                st.write(f"- Тест запроса упал: `{_e}`")
+
     if not _gh_token:
         st.error(
             "❌ **GITHUB_TOKEN не настроен.** Без него Streamlit не может загружать посты из репозитория.\n\n"
             "**Как добавить:**\n"
             "1. Открой Streamlit Cloud → Manage app → Settings → Secrets\n"
-            "2. Добавь строку: `GITHUB_TOKEN = \"github_pat_...\"` (тот же PAT что в GitHub Secrets)\n"
-            "3. Save → приложение перезапустится автоматически"
+            "2. Добавь строку: `GITHUB_TOKEN = \"github_pat_...\"` (с кавычками)\n"
+            "3. Save → дождись перезапуска (30 сек)"
         )
     else:
         st.caption(f"✅ GitHub подключён ({_gh_token[:8]}...)")
