@@ -134,23 +134,33 @@ with st.sidebar:
     st.divider()
     st.subheader("Instagram")
 
+    _METHODS = ["graph_api", "graph_api_scheduled", "instagrapi"]
+    _current_method = os.getenv("IG_PUBLISH_METHOD", "graph_api")
+    if _current_method not in _METHODS:
+        _current_method = "graph_api"
+
     ig_method = st.selectbox(
         "Метод публикации",
-        ["instagrapi", "graph_api", "graph_api_scheduled"],
-        index=["instagrapi", "graph_api", "graph_api_scheduled"].index(
-            os.getenv("IG_PUBLISH_METHOD", "instagrapi")
-        ) if os.getenv("IG_PUBLISH_METHOD", "instagrapi") in ["instagrapi", "graph_api", "graph_api_scheduled"] else 0,
+        _METHODS,
+        index=_METHODS.index(_current_method),
+        help="graph_api — официальный API через Facebook (рекомендовано). instagrapi — устаревший способ через симуляцию приложения.",
     )
 
-    if ig_method == "instagrapi":
-        ig_username = st.text_input("Instagram логин", value=os.getenv("INSTAGRAPI_USERNAME", ""))
-        ig_password = st.text_input("Instagram пароль", value=os.getenv("INSTAGRAPI_PASSWORD", ""), type="password")
-    else:
-        ig_username = ""
-        ig_password = ""
+    # Init defaults so save block doesn't break
+    ig_username = ""
+    ig_password = ""
+    ig_token = ""
+    ig_user_id = ""
+    imgbb_key = ""
+
+    if ig_method.startswith("graph_api"):
         ig_token = st.text_input("IG Access Token", value=os.getenv("IG_ACCESS_TOKEN", ""), type="password")
         ig_user_id = st.text_input("IG User ID", value=os.getenv("IG_USER_ID", ""))
-        imgbb_key = st.text_input("imgbb API Key", value=os.getenv("IMGBB_API_KEY", ""), type="password")
+        st.caption("✅ Картинки хостятся через GitHub raw — imgbb больше не нужен.")
+    else:
+        st.warning("⚠️ instagrapi устарел и блокируется Instagram. Используйте graph_api.")
+        ig_username = st.text_input("Instagram логин", value=os.getenv("INSTAGRAPI_USERNAME", ""))
+        ig_password = st.text_input("Instagram пароль", value=os.getenv("INSTAGRAPI_PASSWORD", ""), type="password")
 
     st.divider()
     st.subheader("🤖 Автоматизация (GitHub Actions)")
