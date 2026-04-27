@@ -180,9 +180,9 @@ with st.sidebar:
 
     posts_per_day = st.number_input(
         "Постов в день",
-        min_value=1, max_value=10,
+        min_value=1, max_value=20,
         value=_app_settings["posts_per_day"],
-        help="Сколько постов генерировать и публиковать в день. IG не любит больше 5/день.",
+        help="Сколько постов генерировать и публиковать в день. Рекомендовано не более 5/день — IG может счесть спамом.",
     )
 
     st.markdown("**Время публикаций (МСК)**")
