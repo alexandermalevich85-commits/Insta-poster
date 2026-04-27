@@ -270,10 +270,17 @@ def _parse_batch_json(raw: str) -> list[dict]:
         # carousel but log so we can spot bad outputs.
         if not (item.get("cta_text") or "").strip():
             log.warning("Carousel '%s' has empty cta_text — will use default", item.get("headline", "")[:50])
-            item["cta_text"] = "Сохрани этот пост, чтобы не потерять. Поделись с подругой!"
+            item["cta_text"] = (
+                "Напиши «ПАРАЛЛЕЛИ» в комменты\n"
+                "- скину видео, в котором расскажу как ещё можно решить свои проблемы на лице"
+            )
         if not (item.get("ps_text") or "").strip():
             log.warning("Carousel '%s' has empty ps_text — will use default", item.get("headline", "")[:50])
-            item["ps_text"] = "Подпишись, чтобы не пропустить новые разборы."
+            item["ps_text"] = (
+                "Возможно, мы больше никогда\n"
+                "с тобой не увидимся - не забудь подписаться ✏️ @lana_surskaya\n"
+                "и поделиться с подружкой 😉"
+            )
         results.append(item)
     return results
 

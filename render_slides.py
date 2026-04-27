@@ -482,8 +482,15 @@ def render_slide_content(point_text: str, output_path: str) -> str:
     return output_path
 
 
-DEFAULT_CTA_TEXT = "Сохрани этот пост, чтобы не потерять. Поделись с подругой!"
-DEFAULT_PS_TEXT = "Подпишись, чтобы не пропустить новые разборы."
+DEFAULT_CTA_TEXT = (
+    "Напиши «ПАРАЛЛЕЛИ» в комменты\n"
+    "- скину видео, в котором расскажу как ещё можно решить свои проблемы на лице"
+)
+DEFAULT_PS_TEXT = (
+    "Возможно, мы больше никогда\n"
+    "с тобой не увидимся - не забудь подписаться ✏️ @lana_surskaya\n"
+    "и поделиться с подружкой 😉"
+)
 
 
 def render_slide_cta(cta_text: str, output_path: str) -> str:
