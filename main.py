@@ -121,7 +121,7 @@ def add_history_entry(carousel: dict, media_id: str | None = None):
 def cmd_generate():
     """Generate batch of carousel texts and schedule them."""
     from generate_text import generate_carousel_batch, generate_ideas
-    from utils import calculate_schedule_times
+    from app_settings import load_settings, schedule_times_for_today
 
     prompts = load_prompts()
     system_prompt = prompts.get("system_prompt")
@@ -129,7 +129,13 @@ def cmd_generate():
     target_audience = prompts.get("target_audience")
     cta_options = prompts.get("cta_options", [])
 
-    count = POSTS_PER_DAY
+    settings = load_settings()
+    if not settings["auto_generate_enabled"]:
+        log.info("Auto-generation disabled in app_settings.json. Skipping.")
+        print("Auto-generation disabled. Skipping.")
+        return
+
+    count = settings["posts_per_day"]
     ideas = load_ideas()
 
     # Get unused ideas
@@ -170,11 +176,10 @@ def cmd_generate():
         cta_options=cta_options,
     )
 
-    # Assign schedule times
-    schedule_times = calculate_schedule_times(
+    # Assign schedule times from app_settings.json (publish_times list)
+    schedule_times = schedule_times_for_today(
+        settings=settings,
         count=len(carousels),
-        start_hour=PUBLISH_START_HOUR,
-        end_hour=PUBLISH_END_HOUR,
         timezone_str=TIMEZONE,
     )
 
@@ -381,8 +386,15 @@ def cmd_publish_smart():
     from render_slides import render_carousel
     from post_instagram import publish_carousel
     from utils import ensure_dir
+    from app_settings import load_settings
 
-    MAX_PER_DAY = 5
+    settings = load_settings()
+    if not settings["auto_publish_enabled"]:
+        log.info("Auto-publish disabled in app_settings.json. Skipping.")
+        print("Auto-publish disabled. Skipping.")
+        return
+
+    MAX_PER_DAY = settings["posts_per_day"]
 
     cmd_cleanup_stale()
 

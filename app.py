@@ -18,6 +18,7 @@ except Exception:
 
 from config import TEXT_PROVIDER, TEXT_MODEL, POSTS_PER_DAY, TIMEZONE
 from generate_text import TEXT_MODELS, DEFAULT_TEXT_MODELS
+from app_settings import load_settings as _load_app_settings, save_settings as _save_app_settings, SETTINGS_FILE as _APP_SETTINGS_FILE
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
@@ -152,7 +153,68 @@ with st.sidebar:
         imgbb_key = st.text_input("imgbb API Key", value=os.getenv("IMGBB_API_KEY", ""), type="password")
 
     st.divider()
-    posts_per_day = st.number_input("Постов в день", min_value=1, max_value=50, value=POSTS_PER_DAY)
+    st.subheader("🤖 Автоматизация (GitHub Actions)")
+
+    _app_settings = _load_app_settings()
+
+    auto_gen = st.toggle(
+        "Автогенерация постов (05:00 МСК)",
+        value=_app_settings["auto_generate_enabled"],
+        help="Если выключить — workflow генерации не будет создавать новые посты",
+    )
+    auto_pub = st.toggle(
+        "Автопубликация (08:30 МСК)",
+        value=_app_settings["auto_publish_enabled"],
+        help="Если выключить — workflow публикации не будет постить в Instagram",
+    )
+
+    posts_per_day = st.number_input(
+        "Постов в день",
+        min_value=1, max_value=10,
+        value=_app_settings["posts_per_day"],
+        help="Сколько постов генерировать и публиковать в день. IG не любит больше 5/день.",
+    )
+
+    st.markdown("**Время публикаций (МСК)**")
+    st.caption("По одной строке HH:MM на каждый пост. 1-й публикуется сразу, остальные — на это время.")
+
+    publish_times: list[str] = []
+    cur_times = _app_settings["publish_times"]
+    for i in range(int(posts_per_day)):
+        default_time = cur_times[i] if i < len(cur_times) else "12:00"
+        try:
+            hh, mm = map(int, default_time.split(":"))
+            from datetime import time as _time
+            t_default = _time(hh, mm)
+        except Exception:
+            from datetime import time as _time
+            t_default = _time(12, 0)
+        t_picked = st.time_input(
+            f"Слот #{i+1}",
+            value=t_default,
+            key=f"slot_time_{i}",
+            step=300,  # 5-minute step
+        )
+        publish_times.append(t_picked.strftime("%H:%M"))
+
+    if st.button("💾 Сохранить автоматизацию", type="primary"):
+        _save_app_settings({
+            "auto_generate_enabled": bool(auto_gen),
+            "auto_publish_enabled": bool(auto_pub),
+            "posts_per_day": int(posts_per_day),
+            "publish_times": publish_times,
+        })
+        # Push to GitHub so workflows pick it up
+        try:
+            sync_to_github(
+                [(_APP_SETTINGS_FILE, "Update automation settings via Streamlit")],
+                "Update automation settings via Streamlit",
+            )
+            st.success("✅ Настройки сохранены и отправлены в GitHub")
+        except Exception as e:
+            st.warning(f"Сохранено локально, но не удалось запушить: {e}")
+
+    st.divider()
 
     if st.button("Сохранить настройки"):
         # Save to provider.cfg
@@ -289,6 +351,46 @@ with tab_queue:
     st.header("Очередь публикации")
 
     pending = load_json(PENDING_FILE, [])
+
+    # ── Today's plan summary ──────────────────────────────────────────────────
+    from datetime import datetime as _dt, date as _d
+    import pytz as _pytz
+    _tz = _pytz.timezone(TIMEZONE)
+    _today = _dt.now(_tz).date()
+
+    _today_posts = []
+    for _p in pending:
+        _sched = _p.get("scheduled_at")
+        if not _sched:
+            continue
+        try:
+            _sd = _dt.fromisoformat(_sched)
+            if _sd.tzinfo is None:
+                _sd = _tz.localize(_sd)
+            if _sd.date() == _today:
+                _today_posts.append((_p, _sd))
+        except Exception:
+            pass
+    _today_posts.sort(key=lambda x: x[1])
+
+    if _today_posts:
+        _published = sum(1 for p, _ in _today_posts if p.get("status") == "published")
+        _scheduled = sum(1 for p, _ in _today_posts if p.get("status") == "scheduled")
+        _pending_cnt = sum(1 for p, _ in _today_posts if p.get("status") == "pending")
+
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Сегодня всего", len(_today_posts))
+        c2.metric("Опубликовано", _published)
+        c3.metric("Запланировано", _scheduled)
+        c4.metric("В ожидании", _pending_cnt)
+
+        with st.expander(f"📅 План на сегодня ({_today.strftime('%d.%m.%Y')})"):
+            for _p, _sd in _today_posts:
+                _status = _p.get("status", "")
+                _icon = {"published": "✅", "scheduled": "🕐", "pending": "🟡", "failed": "❌"}.get(_status, "⚪")
+                st.write(f"{_icon} **{_sd.strftime('%H:%M')}** — {_p.get('headline','')[:80]} _({_status})_")
+        st.divider()
+    # ─────────────────────────────────────────────────────────────────────────
 
     # Sync button always visible
     if st.button("🔄 Загрузить посты из GitHub"):
