@@ -176,11 +176,16 @@ def cmd_generate():
         cta_options=cta_options,
     )
 
-    # Assign schedule times from app_settings.json (publish_times list)
+    # Assign schedule times for TOMORROW (day-ahead buffer):
+    # We generate today, IG publishes tomorrow at the configured slot times.
+    import pytz as _pytz
+    _tz = _pytz.timezone(TIMEZONE)
+    _tomorrow = (datetime.now(_tz) + timedelta(days=1)).date()
     schedule_times = schedule_times_for_today(
         settings=settings,
         count=len(carousels),
         timezone_str=TIMEZONE,
+        base_date=_tomorrow,
     )
 
     # Build pending posts
