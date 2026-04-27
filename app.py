@@ -168,14 +168,14 @@ with st.sidebar:
     _app_settings = _load_app_settings()
 
     auto_gen = st.toggle(
-        "Автогенерация постов (05:00 МСК)",
+        "Автогенерация постов",
         value=_app_settings["auto_generate_enabled"],
-        help="Если выключить — workflow генерации не будет создавать новые посты",
+        help="Каждое утро GitHub Actions создаёт посты на следующий день. Если выключить — новые посты создаваться не будут.",
     )
     auto_pub = st.toggle(
-        "Автопубликация (08:30 МСК)",
+        "Автопланирование публикаций",
         value=_app_settings["auto_publish_enabled"],
-        help="Если выключить — workflow публикации не будет постить в Instagram",
+        help="Все посты дня планируются в Instagram через publish_at. Первая публикация выйдет в указанное время слота #1, дальше по слотам. Если выключить — посты в IG не отправляются.",
     )
 
     posts_per_day = st.number_input(

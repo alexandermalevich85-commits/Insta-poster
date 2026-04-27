@@ -2,10 +2,10 @@ name: Instagram Auto-Publisher
 
 on:
   schedule:
-    # Run once a day at 08:30 MSK (05:30 UTC) — after morning generation.
-    # Publishes 1 post immediately + schedules the rest of today's posts via
-    # Instagram Graph API publish_at. IG auto-publishes scheduled ones.
-    - cron: '30 5 * * *'
+    # Run once a day at 04:00 MSK (01:00 UTC) — well before any reasonable slot.
+    # Schedules ALL of today's posts via Graph API publish_at.
+    # Instagram auto-publishes each at the configured slot time.
+    - cron: '0 1 * * *'
   workflow_dispatch:
 
 env:

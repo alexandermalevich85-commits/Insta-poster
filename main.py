@@ -378,15 +378,16 @@ def cmd_cleanup_stale():
 
 
 def cmd_publish_smart():
-    """Smart publishing: publish 1 immediately, schedule the rest via publish_at.
+    """Schedule all of today's posts via Graph API publish_at.
 
     Strategy:
     1. Cleanup stale (>1 day past-due) posts.
     2. Take today's pending posts (sorted by scheduled_at).
-    3. First post (closest scheduled_at) -> publish immediately.
-    4. Rest of today's posts -> schedule via Graph API publish_at.
-       Instagram will auto-publish them at their scheduled times.
-    5. Cap: 5 per day total.
+    3. ALL posts -> schedule via Graph API publish_at on their slot times.
+       Instagram auto-publishes each at the configured time.
+    4. Cap: posts_per_day from app_settings.json.
+
+    No immediate publishing — first post goes live at slot #1 time.
     """
     from render_slides import render_carousel
     from post_instagram import publish_carousel
@@ -444,43 +445,30 @@ def cmd_publish_smart():
         print("No pending posts for today.")
         return
 
-    print(f"Today's plan: {len(todays)} post(s). 1 immediate + {len(todays)-1} scheduled.")
+    print(f"Today's plan: {len(todays)} post(s) — all scheduled via IG publish_at.")
 
     for n, (idx, post, sched_dt) in enumerate(todays):
-        is_first = (n == 0)
         output_dir = ensure_dir(os.path.join(TMP_DIR, post["id"]))
 
         try:
             image_paths = render_carousel(post, output_dir)
 
-            if is_first:
-                # Immediate publish
-                log.info("Publishing immediately: %s", post["id"])
-                print(f"  [now] {post['headline'][:60]}...")
-                result = publish_carousel(
-                    image_paths, post.get("caption", ""), method="graph_api",
-                )
-                pending[idx]["status"] = "published"
-                pending[idx]["published_at"] = datetime.now().isoformat()
-                pending[idx]["ig_media_id"] = result.get("media_id")
-                add_history_entry(post, result.get("media_id"))
-                print(f"    Published! media_id={result.get('media_id')}")
-            else:
-                # Schedule via publish_at — IG auto-publishes at this time
-                # Must be at least 10 minutes in the future
-                min_future = now + timedelta(minutes=15)
-                effective_sched = max(sched_dt, min_future)
-                log.info("Scheduling: %s at %s", post["id"], effective_sched.isoformat())
-                print(f"  [{effective_sched.strftime('%H:%M')}] {post['headline'][:60]}...")
-                result = publish_carousel(
-                    image_paths, post.get("caption", ""),
-                    method="graph_api_scheduled",
-                    publish_at=effective_sched,
-                )
-                pending[idx]["status"] = "scheduled"
-                pending[idx]["ig_container_id"] = result.get("container_id")
-                pending[idx]["publish_at_ts"] = result.get("publish_at")
-                print(f"    Scheduled at {effective_sched.strftime('%H:%M')}")
+            # Schedule via publish_at — IG auto-publishes at this time.
+            # Must be at least 10 minutes in the future. If a slot is already
+            # in the past or too close, push it to "now + 15 min".
+            min_future = now + timedelta(minutes=15)
+            effective_sched = max(sched_dt, min_future)
+            log.info("Scheduling: %s at %s", post["id"], effective_sched.isoformat())
+            print(f"  [{effective_sched.strftime('%H:%M')}] {post['headline'][:60]}...")
+            result = publish_carousel(
+                image_paths, post.get("caption", ""),
+                method="graph_api_scheduled",
+                publish_at=effective_sched,
+            )
+            pending[idx]["status"] = "scheduled"
+            pending[idx]["ig_container_id"] = result.get("container_id")
+            pending[idx]["publish_at_ts"] = result.get("publish_at")
+            print(f"    Scheduled at {effective_sched.strftime('%H:%M')}")
 
             save_pending(pending)
         except Exception as e:
