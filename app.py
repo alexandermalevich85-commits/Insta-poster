@@ -133,16 +133,21 @@ with st.sidebar:
 
     st.divider()
     st.subheader("Instagram")
+    st.caption("✅ Публикация через Instagram Graph API. Все секреты хранятся в GitHub Actions — отсюда менять ничего не нужно.")
 
     # Hardcoded: Graph API — единственный рабочий способ
     ig_method = "graph_api"
     ig_username = ""
     ig_password = ""
     imgbb_key = ""
+    ig_token = os.getenv("IG_ACCESS_TOKEN", "")
+    ig_user_id = os.getenv("IG_USER_ID", "")
 
-    ig_token = st.text_input("IG Access Token", value=os.getenv("IG_ACCESS_TOKEN", ""), type="password")
-    ig_user_id = st.text_input("IG User ID", value=os.getenv("IG_USER_ID", ""))
-    st.caption("✅ Публикация через официальный Instagram Graph API. Картинки хостятся в GitHub raw.")
+    with st.expander("Дополнительно (не обязательно)"):
+        ig_token = st.text_input("IG Access Token", value=ig_token, type="password",
+                                  help="Используется только если запускаешь приложение локально. На Streamlit Cloud не требуется.")
+        ig_user_id = st.text_input("IG User ID", value=ig_user_id,
+                                    help="Используется только если запускаешь приложение локально.")
 
     st.divider()
     st.subheader("🤖 Автоматизация (GitHub Actions)")
@@ -341,6 +346,19 @@ with tab_gen:
 
 with tab_queue:
     st.header("Очередь публикации")
+
+    # GitHub connection status — must be configured in Streamlit Cloud Secrets
+    _gh_token = _get_github_token()
+    if not _gh_token:
+        st.error(
+            "❌ **GITHUB_TOKEN не настроен.** Без него Streamlit не может загружать посты из репозитория.\n\n"
+            "**Как добавить:**\n"
+            "1. Открой Streamlit Cloud → Manage app → Settings → Secrets\n"
+            "2. Добавь строку: `GITHUB_TOKEN = \"github_pat_...\"` (тот же PAT что в GitHub Secrets)\n"
+            "3. Save → приложение перезапустится автоматически"
+        )
+    else:
+        st.caption(f"✅ GitHub подключён ({_gh_token[:8]}...)")
 
     pending = load_json(PENDING_FILE, [])
 
