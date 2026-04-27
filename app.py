@@ -134,33 +134,15 @@ with st.sidebar:
     st.divider()
     st.subheader("Instagram")
 
-    _METHODS = ["graph_api", "graph_api_scheduled", "instagrapi"]
-    _current_method = os.getenv("IG_PUBLISH_METHOD", "graph_api")
-    if _current_method not in _METHODS:
-        _current_method = "graph_api"
-
-    ig_method = st.selectbox(
-        "Метод публикации",
-        _METHODS,
-        index=_METHODS.index(_current_method),
-        help="graph_api — официальный API через Facebook (рекомендовано). instagrapi — устаревший способ через симуляцию приложения.",
-    )
-
-    # Init defaults so save block doesn't break
+    # Hardcoded: Graph API — единственный рабочий способ
+    ig_method = "graph_api"
     ig_username = ""
     ig_password = ""
-    ig_token = ""
-    ig_user_id = ""
     imgbb_key = ""
 
-    if ig_method.startswith("graph_api"):
-        ig_token = st.text_input("IG Access Token", value=os.getenv("IG_ACCESS_TOKEN", ""), type="password")
-        ig_user_id = st.text_input("IG User ID", value=os.getenv("IG_USER_ID", ""))
-        st.caption("✅ Картинки хостятся через GitHub raw — imgbb больше не нужен.")
-    else:
-        st.warning("⚠️ instagrapi устарел и блокируется Instagram. Используйте graph_api.")
-        ig_username = st.text_input("Instagram логин", value=os.getenv("INSTAGRAPI_USERNAME", ""))
-        ig_password = st.text_input("Instagram пароль", value=os.getenv("INSTAGRAPI_PASSWORD", ""), type="password")
+    ig_token = st.text_input("IG Access Token", value=os.getenv("IG_ACCESS_TOKEN", ""), type="password")
+    ig_user_id = st.text_input("IG User ID", value=os.getenv("IG_USER_ID", ""))
+    st.caption("✅ Публикация через официальный Instagram Graph API. Картинки хостятся в GitHub raw.")
 
     st.divider()
     st.subheader("🤖 Автоматизация (GitHub Actions)")

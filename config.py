@@ -33,7 +33,7 @@ GOOGLE_SERVICE_ACCOUNT_JSON = _get("GOOGLE_SERVICE_ACCOUNT_JSON")
 # Instagram Graph API
 IG_ACCESS_TOKEN = _get("IG_ACCESS_TOKEN")
 IG_USER_ID = _get("IG_USER_ID")
-IG_PUBLISH_METHOD = _get("IG_PUBLISH_METHOD", "instagrapi").lower()  # graph_api | graph_api_scheduled | instagrapi
+IG_PUBLISH_METHOD = _get("IG_PUBLISH_METHOD", "graph_api").lower()  # graph_api | graph_api_scheduled (instagrapi устарел и блокируется IG)
 
 # Instagram instagrapi (fallback)
 INSTAGRAPI_USERNAME = _get("INSTAGRAPI_USERNAME")

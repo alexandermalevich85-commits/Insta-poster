@@ -462,7 +462,7 @@ def publish_carousel(
     Returns:
         {"ok": True, "media_id"|"container_id": "...", "method": "..."}
     """
-    m = (method or IG_PUBLISH_METHOD or _env("IG_PUBLISH_METHOD", "instagrapi")).lower()
+    m = (method or IG_PUBLISH_METHOD or _env("IG_PUBLISH_METHOD", "graph_api")).lower()
 
     if m == "graph_api":
         return publish_carousel_graph_api(image_paths, caption, **kwargs)
