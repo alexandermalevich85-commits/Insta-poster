@@ -77,6 +77,7 @@ def _create_media_container(
 
     params = {
         "image_url": image_url,
+        "media_type": "IMAGE",
         "is_carousel_item": str(is_carousel_item).lower(),
         "access_token": token,
     }

@@ -284,13 +284,33 @@ def cmd_publish_next():
 
 
 def cmd_publish():
-    """Publish all pending carousels whose time has arrived."""
+    """Publish all pending carousels whose time has arrived.
+
+    Hard cap: max 5 posts per day to avoid IG spam flags.
+    """
     from utils import retry
     import time
+
+    MAX_PER_DAY = 5
 
     pending = load_pending()
     tz = pytz.timezone(TIMEZONE)
     now = datetime.now(tz)
+    today = now.date()
+
+    # Count how many we already published today
+    published_today = sum(
+        1 for p in pending
+        if p["status"] == "published"
+        and p.get("published_at")
+        and datetime.fromisoformat(p["published_at"]).date() == today
+    )
+
+    remaining_today = max(0, MAX_PER_DAY - published_today)
+    if remaining_today == 0:
+        print(f"Daily limit reached ({MAX_PER_DAY} posts). Skipping.")
+        log.info("Daily publish limit reached (%d).", MAX_PER_DAY)
+        return
 
     due_count = sum(
         1 for p in pending
@@ -303,9 +323,10 @@ def cmd_publish():
         print("No carousels due for publishing.")
         return
 
-    print(f"Found {due_count} carousels due for publishing.")
+    to_publish = min(due_count, remaining_today)
+    print(f"Found {due_count} due carousels. Publishing {to_publish} (cap: {MAX_PER_DAY}/day, already published today: {published_today}).")
 
-    for i in range(due_count):
+    for i in range(to_publish):
         try:
             cmd_publish_next()
         except Exception as e:
