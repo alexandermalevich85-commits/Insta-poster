@@ -7,7 +7,7 @@ import logging
 import os
 import sys
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytz
 
@@ -334,6 +334,149 @@ def cmd_publish():
         time.sleep(5)  # Delay between publishes
 
 
+def cmd_cleanup_stale():
+    """Mark long-overdue pending posts as 'expired' so they don't pile up.
+
+    Posts whose scheduled_at is more than 1 day in the past — we'll never
+    publish them retroactively. Better to drop them than have a 150-deep queue.
+    """
+    pending = load_pending()
+    tz = pytz.timezone(TIMEZONE)
+    now = datetime.now(tz)
+    cutoff = now - timedelta(days=1)
+
+    expired = 0
+    for p in pending:
+        if p["status"] != "pending":
+            continue
+        scheduled = p.get("scheduled_at")
+        if not scheduled:
+            continue
+        sched_dt = datetime.fromisoformat(scheduled)
+        if sched_dt.tzinfo is None:
+            sched_dt = tz.localize(sched_dt)
+        if sched_dt < cutoff:
+            p["status"] = "expired"
+            expired += 1
+
+    if expired:
+        save_pending(pending)
+        log.info("Marked %d stale posts as expired.", expired)
+        print(f"Cleanup: marked {expired} stale posts as expired.")
+    else:
+        print("Cleanup: nothing to expire.")
+
+
+def cmd_publish_smart():
+    """Smart publishing: publish 1 immediately, schedule the rest via publish_at.
+
+    Strategy:
+    1. Cleanup stale (>1 day past-due) posts.
+    2. Take today's pending posts (sorted by scheduled_at).
+    3. First post (closest scheduled_at) -> publish immediately.
+    4. Rest of today's posts -> schedule via Graph API publish_at.
+       Instagram will auto-publish them at their scheduled times.
+    5. Cap: 5 per day total.
+    """
+    from render_slides import render_carousel
+    from post_instagram import publish_carousel
+    from utils import ensure_dir
+
+    MAX_PER_DAY = 5
+
+    cmd_cleanup_stale()
+
+    pending = load_pending()
+    tz = pytz.timezone(TIMEZONE)
+    now = datetime.now(tz)
+    today = now.date()
+
+    # How many already done (published or scheduled) today
+    done_today = sum(
+        1 for p in pending
+        if p["status"] in ("published", "scheduled")
+        and (
+            (p.get("published_at") and datetime.fromisoformat(p["published_at"]).date() == today)
+            or (p.get("scheduled_at") and datetime.fromisoformat(p["scheduled_at"]).date() == today)
+        )
+    )
+    remaining = max(0, MAX_PER_DAY - done_today)
+
+    if remaining == 0:
+        print(f"Daily limit reached ({MAX_PER_DAY}). Skipping.")
+        return
+
+    # Today's pending posts, sorted by scheduled_at
+    todays = []
+    for i, p in enumerate(pending):
+        if p["status"] != "pending":
+            continue
+        sched = p.get("scheduled_at")
+        if not sched:
+            continue
+        sched_dt = datetime.fromisoformat(sched)
+        if sched_dt.tzinfo is None:
+            sched_dt = tz.localize(sched_dt)
+        if sched_dt.date() != today:
+            continue
+        todays.append((i, p, sched_dt))
+    todays.sort(key=lambda x: x[2])
+    todays = todays[:remaining]
+
+    if not todays:
+        print("No pending posts for today.")
+        return
+
+    print(f"Today's plan: {len(todays)} post(s). 1 immediate + {len(todays)-1} scheduled.")
+
+    for n, (idx, post, sched_dt) in enumerate(todays):
+        is_first = (n == 0)
+        output_dir = ensure_dir(os.path.join(TMP_DIR, post["id"]))
+
+        try:
+            image_paths = render_carousel(post, output_dir)
+
+            if is_first:
+                # Immediate publish
+                log.info("Publishing immediately: %s", post["id"])
+                print(f"  [now] {post['headline'][:60]}...")
+                result = publish_carousel(
+                    image_paths, post.get("caption", ""), method="graph_api",
+                )
+                pending[idx]["status"] = "published"
+                pending[idx]["published_at"] = datetime.now().isoformat()
+                pending[idx]["ig_media_id"] = result.get("media_id")
+                add_history_entry(post, result.get("media_id"))
+                print(f"    Published! media_id={result.get('media_id')}")
+            else:
+                # Schedule via publish_at — IG auto-publishes at this time
+                # Must be at least 10 minutes in the future
+                min_future = now + timedelta(minutes=15)
+                effective_sched = max(sched_dt, min_future)
+                log.info("Scheduling: %s at %s", post["id"], effective_sched.isoformat())
+                print(f"  [{effective_sched.strftime('%H:%M')}] {post['headline'][:60]}...")
+                result = publish_carousel(
+                    image_paths, post.get("caption", ""),
+                    method="graph_api_scheduled",
+                    publish_at=effective_sched,
+                )
+                pending[idx]["status"] = "scheduled"
+                pending[idx]["ig_container_id"] = result.get("container_id")
+                pending[idx]["publish_at_ts"] = result.get("publish_at")
+                print(f"    Scheduled at {effective_sched.strftime('%H:%M')}")
+
+            save_pending(pending)
+        except Exception as e:
+            log.error("Failed for %s: %s", post["id"], e)
+            print(f"    ERROR: {e}")
+            pending[idx]["last_error"] = str(e)
+            pending[idx]["last_error_at"] = datetime.now().isoformat()
+            save_pending(pending)
+
+        import time
+        time.sleep(3)
+
+
 def cmd_schedule():
     """Schedule all pending carousels via Instagram Scheduled Publishing API.
 
@@ -487,6 +630,8 @@ COMMANDS = {
     "generate": cmd_generate,
     "publish": cmd_publish,
     "publish_next": cmd_publish_next,
+    "publish_smart": cmd_publish_smart,
+    "cleanup_stale": cmd_cleanup_stale,
     "schedule": cmd_schedule,
     "generate_and_schedule": cmd_generate_and_schedule,
     "full": cmd_full,

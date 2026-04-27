@@ -2,18 +2,11 @@ name: Instagram Auto-Publisher
 
 on:
   schedule:
-    # Run every hour at :05 (MSK = UTC+3, so 8:05–22:05 MSK = 05:05–19:05 UTC)
-    - cron: '5 5-19 * * *'
+    # Run once a day at 08:30 MSK (05:30 UTC) — after morning generation.
+    # Publishes 1 post immediately + schedules the rest of today's posts via
+    # Instagram Graph API publish_at. IG auto-publishes scheduled ones.
+    - cron: '30 5 * * *'
   workflow_dispatch:
-    inputs:
-      force:
-        description: 'Опубликовать даже если не пришло время'
-        required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'false'
-          - 'true'
 
 env:
   TIMEZONE: 'Europe/Moscow'
@@ -24,7 +17,6 @@ env:
   GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
   IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
   IG_USER_ID: ${{ secrets.IG_USER_ID }}
-  IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
   GH_PAT: ${{ secrets.GH_PAT }}
   GITHUB_REPO: 'alexandermalevich85-commits/Insta-poster'
 
@@ -51,18 +43,17 @@ jobs:
           cp fonts/*.ttf ~/.fonts/
           fc-cache -f -v
 
-      - name: Check and publish due posts
-        run: python main.py publish
+      - name: Publish 1 + schedule rest of today
+        run: python main.py publish_smart
 
       - name: Commit updated statuses
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          # Stage only data files we care about — ignore tmp/ rendered slides
           git add pending_posts.json history.json 2>/dev/null || true
           git stash --include-untracked --quiet 2>/dev/null || true
           git pull --rebase origin main || true
           git stash pop --quiet 2>/dev/null || true
           git add pending_posts.json history.json 2>/dev/null || true
-          git diff --staged --quiet || git commit -m "Auto: publish $(date +%Y-%m-%d_%H:%M)"
+          git diff --staged --quiet || git commit -m "Auto: publish_smart $(date +%Y-%m-%d_%H:%M)"
           git push origin main || echo "Push failed"
