@@ -39,7 +39,10 @@ MAX_SCHEDULE_SECONDS = 75 * 24 * 3600  # 75 days in the future
 
 
 def _upload_to_imgbb(image_path: str, api_key: str | None = None) -> str:
-    """Upload image to imgbb.com and return public URL."""
+    """Upload image to imgbb.com and return public URL.
+
+    DEPRECATED: imgbb URLs are now blocked by Instagram. Use _upload_to_github instead.
+    """
     key = api_key or IMGBB_API_KEY or os.getenv("IMGBB_API_KEY", "")
     if not key:
         raise ValueError("IMGBB_API_KEY required for Graph API image hosting")
@@ -61,6 +64,56 @@ def _upload_to_imgbb(image_path: str, api_key: str | None = None) -> str:
     return data["data"]["url"]
 
 
+def _upload_to_github(image_path: str, github_token: str | None = None,
+                     repo: str | None = None) -> str:
+    """Upload image to a GitHub repo and return raw.githubusercontent.com URL.
+
+    Converts PNG → JPG (Instagram Graph API rejects PNG, accepts JPEG).
+    Files are committed to `posts-images/` directory in the repo so IG can
+    download them via the public raw URL.
+    """
+    from PIL import Image
+    import io
+    import uuid
+
+    token = github_token or os.getenv("GITHUB_TOKEN") or os.getenv("GH_PAT") or _env("GITHUB_TOKEN")
+    if not token:
+        raise ValueError("GITHUB_TOKEN required for GitHub image hosting")
+
+    repo = repo or os.getenv("GITHUB_REPO") or _env("GITHUB_REPO") or "alexandermalevich85-commits/Insta-poster"
+
+    # Convert to JPG (Instagram rejects PNG)
+    img = Image.open(image_path).convert("RGB")
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG", quality=92, optimize=True)
+    jpg_bytes = buf.getvalue()
+
+    # Generate unique filename to avoid collisions across parallel posts
+    filename = f"posts-images/{uuid.uuid4().hex}.jpg"
+    content_b64 = base64.b64encode(jpg_bytes).decode("ascii")
+
+    # Use GitHub Contents API to create the file
+    api_url = f"https://api.github.com/repos/{repo}/contents/{filename}"
+    resp = requests.put(
+        api_url,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/vnd.github+json",
+        },
+        json={
+            "message": f"Upload slide for IG publish",
+            "content": content_b64,
+        },
+        timeout=60,
+    )
+    if resp.status_code not in (200, 201):
+        raise RuntimeError(f"GitHub upload failed ({resp.status_code}): {resp.text[:300]}")
+
+    raw_url = f"https://raw.githubusercontent.com/{repo}/main/{filename}"
+    log.info("Uploaded to GitHub: %s", raw_url)
+    return raw_url
+
+
 # ── Graph API ────────────────────────────────────────────────────────────────
 
 
@@ -77,7 +130,6 @@ def _create_media_container(
 
     params = {
         "image_url": image_url,
-        "media_type": "IMAGE",
         "is_carousel_item": str(is_carousel_item).lower(),
         "access_token": token,
     }
@@ -209,11 +261,11 @@ def publish_carousel_graph_api(
     Returns:
         {"ok": True, "media_id": "...", "method": "graph_api"}
     """
-    # Step 1: Upload images to public hosting
+    # Step 1: Upload images to public hosting (GitHub raw — IG blocks imgbb)
     image_urls = []
     for i, path in enumerate(image_paths):
-        log.info("Uploading slide %d/%d to imgbb...", i + 1, len(image_paths))
-        url = _upload_to_imgbb(path, api_key=imgbb_api_key)
+        log.info("Uploading slide %d/%d to GitHub...", i + 1, len(image_paths))
+        url = _upload_to_github(path)
         image_urls.append(url)
         time.sleep(1)  # Rate limit
 
@@ -282,11 +334,11 @@ def schedule_carousel_graph_api(
     else:
         publish_ts = int(publish_at)
 
-    # Step 1: Upload images to public hosting
+    # Step 1: Upload images to public hosting (GitHub raw — IG blocks imgbb)
     image_urls = []
     for i, path in enumerate(image_paths):
-        log.info("Uploading slide %d/%d to imgbb...", i + 1, len(image_paths))
-        url = _upload_to_imgbb(path, api_key=imgbb_api_key)
+        log.info("Uploading slide %d/%d to GitHub...", i + 1, len(image_paths))
+        url = _upload_to_github(path)
         image_urls.append(url)
         time.sleep(1)
 
