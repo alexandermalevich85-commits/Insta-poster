@@ -121,7 +121,7 @@
   },
   {
     "id": "7e6619dd",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-04-19T04:57:11.130256",
     "scheduled_at": "2026-04-19T14:20:00+03:00",
     "topic": "",
@@ -140,11 +140,12 @@
     "text_provider": "gemini",
     "idea": "Те, кто начал есть 1 зубчик чеснока в день 2 недели, перестал болеть простудами и чувствует себя крепче (иммунологи в недоумении).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "GITHUB_TOKEN required for GitHub image hosting"
   },
   {
     "id": "054ff25e",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-04-19T04:57:11.130276",
     "scheduled_at": "2026-04-19T14:59:00+03:00",
     "topic": "",
@@ -163,11 +164,12 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые перестали говорить \"Я должна\" 1 неделю, почувствовали себя свободнее на 70% и перестали выгорать (психологи подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "GITHUB_TOKEN required for GitHub image hosting"
   },
   {
     "id": "b811b2aa",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-04-19T04:57:11.130287",
     "scheduled_at": "2026-04-19T15:46:00+03:00",
     "topic": "",
@@ -186,11 +188,12 @@
     "text_provider": "gemini",
     "idea": "Она перестала проверять соцсети перед сном 10 дней — и её тревожность упала на 50%, а сон стал глубоким (нейробиологи шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "GITHUB_TOKEN required for GitHub image hosting"
   },
   {
     "id": "02ed669b",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-04-19T04:57:11.130296",
     "scheduled_at": "2026-04-19T16:22:00+03:00",
     "topic": "",
@@ -209,11 +212,12 @@
     "text_provider": "gemini",
     "idea": "Та, кто начала \"благодарить\" себя 5 минут в день за мелкие дела, перестала критиковать себя за 2 недели (психотерапевты подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "GITHUB_TOKEN required for GitHub image hosting"
   },
   {
     "id": "129e6c96",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-04-19T04:57:11.130305",
     "scheduled_at": "2026-04-19T17:06:00+03:00",
     "topic": "",
@@ -232,7 +236,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые перестали \"заглядывать в прошлое\" 1 месяц, почувствовали себя счастливее на 80% и начали строить планы (психологи одобряют).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "GITHUB_TOKEN required for GitHub image hosting"
   },
   {
     "id": "a75e6eb7",
