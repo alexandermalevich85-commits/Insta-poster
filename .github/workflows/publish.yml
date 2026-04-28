@@ -2,10 +2,10 @@ name: Instagram Auto-Publisher
 
 on:
   schedule:
-    # Run once a day at 04:00 MSK (01:00 UTC) — well before any reasonable slot.
+    # Run once a day at 06:23 MSK (03:23 UTC) — off-peak minute to avoid GH Actions cron skips.
     # Schedules ALL of today's posts via Graph API publish_at.
     # Instagram auto-publishes each at the configured slot time.
-    - cron: '0 1 * * *'
+    - cron: '23 3 * * *'
   workflow_dispatch:
 
 env:

@@ -2,8 +2,8 @@ name: Instagram Carousel Auto-poster
 
 on:
   schedule:
-    # Generate batch at 05:00 MSK (02:00 UTC)
-    - cron: '0 2 * * *'
+    # Generate batch at 05:17 MSK (02:17 UTC) — off-peak minute to avoid GH Actions cron skips
+    - cron: '17 2 * * *'
   workflow_dispatch:
     inputs:
       action:
