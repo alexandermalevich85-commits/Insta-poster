@@ -378,16 +378,17 @@ def cmd_cleanup_stale():
 
 
 def cmd_publish_smart():
-    """Schedule all of today's posts via Graph API publish_at.
+    """Schedule all future-dated pending posts via Graph API publish_at.
 
     Strategy:
     1. Cleanup stale (>1 day past-due) posts.
-    2. Take today's pending posts (sorted by scheduled_at).
-    3. ALL posts -> schedule via Graph API publish_at on their slot times.
+    2. Take ALL pending posts whose scheduled_at >= now (any future date).
+       Instagram allows publish_at up to 75 days in the future.
+    3. Schedule each via Graph API publish_at on its slot time.
        Instagram auto-publishes each at the configured time.
-    4. Cap: posts_per_day from app_settings.json.
+    4. Cap per day: posts_per_day from app_settings.json.
 
-    No immediate publishing — first post goes live at slot #1 time.
+    No immediate publishing — first post of each day goes live at slot #1 time.
     """
     from render_slides import render_carousel
     from post_instagram import publish_carousel
@@ -407,25 +408,13 @@ def cmd_publish_smart():
     pending = load_pending()
     tz = pytz.timezone(TIMEZONE)
     now = datetime.now(tz)
-    today = now.date()
 
-    # How many already done (published or scheduled) today
-    done_today = sum(
-        1 for p in pending
-        if p["status"] in ("published", "scheduled")
-        and (
-            (p.get("published_at") and datetime.fromisoformat(p["published_at"]).date() == today)
-            or (p.get("scheduled_at") and datetime.fromisoformat(p["scheduled_at"]).date() == today)
-        )
-    )
-    remaining = max(0, MAX_PER_DAY - done_today)
+    # IG allows publish_at up to 75 days ahead, with a 10-min minimum buffer.
+    max_future = now + timedelta(days=74)
+    min_future = now + timedelta(minutes=15)
 
-    if remaining == 0:
-        print(f"Daily limit reached ({MAX_PER_DAY}). Skipping.")
-        return
-
-    # Today's pending posts, sorted by scheduled_at
-    todays = []
+    # Group future pending posts by scheduled date so we can apply per-day cap.
+    by_day: dict = {}  # date -> [(idx, post, sched_dt), ...]
     for i, p in enumerate(pending):
         if p["status"] != "pending":
             continue
@@ -435,19 +424,39 @@ def cmd_publish_smart():
         sched_dt = datetime.fromisoformat(sched)
         if sched_dt.tzinfo is None:
             sched_dt = tz.localize(sched_dt)
-        if sched_dt.date() != today:
+        if sched_dt > max_future:
             continue
-        todays.append((i, p, sched_dt))
-    todays.sort(key=lambda x: x[2])
-    todays = todays[:remaining]
+        # Stale posts already filtered by cmd_cleanup_stale; anything left in
+        # the past goes within the 15-min "min_future" cushion when scheduling.
+        d = max(sched_dt, min_future).date()
+        by_day.setdefault(d, []).append((i, p, sched_dt))
 
-    if not todays:
-        print("No pending posts for today.")
+    if not by_day:
+        print("No pending posts to schedule.")
         return
 
-    print(f"Today's plan: {len(todays)} post(s) — all scheduled via IG publish_at.")
+    # For each day, count how many are already published/scheduled and respect cap
+    queue = []  # (idx, post, sched_dt) flat list to actually schedule
+    for d in sorted(by_day.keys()):
+        already = sum(
+            1 for p in pending
+            if p["status"] in ("published", "scheduled")
+            and (
+                (p.get("published_at") and datetime.fromisoformat(p["published_at"]).date() == d)
+                or (p.get("scheduled_at") and datetime.fromisoformat(p["scheduled_at"]).date() == d)
+            )
+        )
+        slots_left = max(0, MAX_PER_DAY - already)
+        day_posts = sorted(by_day[d], key=lambda x: x[2])[:slots_left]
+        queue.extend(day_posts)
 
-    for n, (idx, post, sched_dt) in enumerate(todays):
+    if not queue:
+        print(f"Daily limit reached on all upcoming days (cap {MAX_PER_DAY}/day).")
+        return
+
+    print(f"Scheduling {len(queue)} post(s) across {len(by_day)} day(s) via IG publish_at.")
+
+    for n, (idx, post, sched_dt) in enumerate(queue):
         output_dir = ensure_dir(os.path.join(TMP_DIR, post["id"]))
 
         try:
