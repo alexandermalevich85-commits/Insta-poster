@@ -2,12 +2,12 @@ name: Instagram Auto-Publisher
 
 on:
   schedule:
-    # Every 10 min in publishing window (8:00–22:00 MSK = 5:00–19:00 UTC).
-    # Off-peak minutes (5,15,25,35,45,55) — GitHub Actions cron is delayed
+    # Every 15 min in publishing window (8:00–22:00 MSK = 5:00–19:00 UTC).
+    # Off-peak minutes (5,20,35,50) — GitHub Actions cron is delayed
     # at the start of every hour, so we deliberately avoid :00/:30.
     # Each tick: directly publishes any pending post whose slot has arrived.
     # No reliance on Instagram `publish_at` (it silently fails ~10% of the time).
-    - cron: '5,15,25,35,45,55 5-19 * * *'
+    - cron: '5,20,35,50 5-19 * * *'
   workflow_dispatch:
 
 # Prevent two ticks from publishing the same post if a previous run is still
@@ -41,6 +41,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: requirements.txt
 
       - name: Install dependencies
         run: pip install -r requirements.txt
