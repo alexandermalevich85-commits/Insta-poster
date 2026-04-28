@@ -2,11 +2,19 @@ name: Instagram Auto-Publisher
 
 on:
   schedule:
-    # Run once a day at 06:23 MSK (03:23 UTC) — off-peak minute to avoid GH Actions cron skips.
-    # Schedules ALL of today's posts via Graph API publish_at.
-    # Instagram auto-publishes each at the configured slot time.
-    - cron: '23 3 * * *'
+    # Every 10 min in publishing window (8:00–22:00 MSK = 5:00–19:00 UTC).
+    # Off-peak minutes (5,15,25,35,45,55) — GitHub Actions cron is delayed
+    # at the start of every hour, so we deliberately avoid :00/:30.
+    # Each tick: directly publishes any pending post whose slot has arrived.
+    # No reliance on Instagram `publish_at` (it silently fails ~10% of the time).
+    - cron: '5,15,25,35,45,55 5-19 * * *'
   workflow_dispatch:
+
+# Prevent two ticks from publishing the same post if a previous run is still
+# rendering. Queue, don't cancel — we want every tick to eventually run.
+concurrency:
+  group: instagram-publish
+  cancel-in-progress: false
 
 env:
   TIMEZONE: 'Europe/Moscow'
@@ -43,8 +51,11 @@ jobs:
           cp fonts/*.ttf ~/.fonts/
           fc-cache -f -v
 
-      - name: Publish 1 + schedule rest of today
-        run: python main.py publish_smart
+      - name: Rescue any legacy scheduled containers
+        run: python main.py watchdog
+
+      - name: Publish posts whose slot has arrived
+        run: python main.py publish
 
       - name: Commit updated statuses
         run: |
@@ -55,5 +66,5 @@ jobs:
           git pull --rebase origin main || true
           git stash pop --quiet 2>/dev/null || true
           git add pending_posts.json history.json 2>/dev/null || true
-          git diff --staged --quiet || git commit -m "Auto: publish_smart $(date +%Y-%m-%d_%H:%M)"
+          git diff --staged --quiet || git commit -m "Auto: publish $(date +%Y-%m-%d_%H:%M)"
           git push origin main || echo "Push failed"

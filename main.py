@@ -296,12 +296,19 @@ def cmd_publish_next():
 def cmd_publish():
     """Publish all pending carousels whose time has arrived.
 
-    Hard cap: max 5 posts per day to avoid IG spam flags.
+    Hard cap: posts_per_day from app_settings.json to avoid IG spam flags.
     """
     from utils import retry
+    from app_settings import load_settings
     import time
 
-    MAX_PER_DAY = 5
+    settings = load_settings()
+    if not settings["auto_publish_enabled"]:
+        log.info("Auto-publish disabled in app_settings.json. Skipping.")
+        print("Auto-publish disabled. Skipping.")
+        return
+
+    MAX_PER_DAY = settings["posts_per_day"]
 
     pending = load_pending()
     tz = pytz.timezone(TIMEZONE)
@@ -503,7 +510,7 @@ def cmd_watchdog():
     pending = load_pending()
     tz = pytz.timezone(TIMEZONE)
     now = datetime.now(tz)
-    grace = timedelta(minutes=5)
+    grace = timedelta(minutes=2)
 
     rescued = 0
     for idx, p in enumerate(pending):
