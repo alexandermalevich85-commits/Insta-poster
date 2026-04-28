@@ -418,10 +418,16 @@ with tab_queue:
 
     if _today_posts or _tomorrow_posts:
         st.subheader("Сегодня")
-        _render_day_block("Сегодня", _today, _today_posts) if _today_posts else st.caption("Постов на сегодня нет.")
+        if _today_posts:
+            _render_day_block("Сегодня", _today, _today_posts)
+        else:
+            st.caption("Постов на сегодня нет.")
 
         st.subheader("Завтра")
-        _render_day_block("Завтра", _tomorrow, _tomorrow_posts) if _tomorrow_posts else st.caption("Постов на завтра ещё нет — будут созданы автогенерацией в 05:00 МСК.")
+        if _tomorrow_posts:
+            _render_day_block("Завтра", _tomorrow, _tomorrow_posts)
+        else:
+            st.caption("Постов на завтра ещё нет — будут созданы автогенерацией в 05:00 МСК.")
 
         # Future days (later than tomorrow)
         _later_dates = sorted(d for d in _by_day if d > _tomorrow)
