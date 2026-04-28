@@ -20,7 +20,9 @@
     "text_provider": "gemini",
     "idea": "Родители, которые разрешили 7-летнему ребенку \"выбирать\" наказание за проступок, получили на 60% меньше повторных нарушений за месяц (детские психологи шокированы самодисциплиной).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "last_error": "Instagram API error (400): Only photo or video can be accepted as media type.",
+    "last_error_at": "2026-04-28T04:02:07.679307"
   },
   {
     "id": "8f2f321c",
@@ -43,7 +45,9 @@
     "text_provider": "gemini",
     "idea": "Женщины, что стали *наносить крем для глаз НЕ на веки, а под бровь и на скулы* 3 недели, разгладили \"гусиные лапки\" и открыли взгляд (визажисты скрывают эту технику).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "last_error": "Instagram API error (400): Only photo or video can be accepted as media type.",
+    "last_error_at": "2026-04-28T04:02:28.859851"
   },
   {
     "id": "a868ab54",
@@ -66,7 +70,9 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые начали *спать без носков* 2 недели, забыли о холодных ногах и улучшили качество сна на 60% (сомнологи подтверждают терморегуляцию).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "last_error": "Instagram API error (400): Only photo or video can be accepted as media type.",
+    "last_error_at": "2026-04-28T04:02:49.772878"
   },
   {
     "id": "1fae3d12",
@@ -89,7 +95,9 @@
     "text_provider": "gemini",
     "idea": "Женщины, что стали *ОТКАЗЫВАТЬ в просьбах, которые им не нравятся,* 3 недели, заметили, что их стали ценить на 50% больше в 40 лет (психологи подтверждают эффект здоровых границ).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "last_error": "Instagram API error (400): Only photo or video can be accepted as media type.",
+    "last_error_at": "2026-04-28T04:03:10.952087"
   },
   {
     "id": "7d999e27",
@@ -112,6 +120,8 @@
     "text_provider": "gemini",
     "idea": "Многодетная мама, что *стала делегировать детям \"уборку\" своих комнат* 2 раза в неделю, сэкономила 3 часа и научила их ответственности (педагоги подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "last_error": "Instagram API error (400): Only photo or video can be accepted as media type.",
+    "last_error_at": "2026-04-28T04:03:31.986528"
   }
 ]
