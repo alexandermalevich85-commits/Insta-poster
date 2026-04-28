@@ -2,5 +2,11 @@
   "auto_generate_enabled": true,
   "auto_publish_enabled": true,
   "posts_per_day": 5,
-  "publish_times": ["10:00", "13:00", "16:00", "19:00", "21:00"]
+  "publish_times": [
+    "10:00",
+    "13:00",
+    "16:00",
+    "19:00",
+    "21:05"
+  ]
 }
