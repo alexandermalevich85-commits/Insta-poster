@@ -1,0 +1,47 @@
+name: Instagram Publish Watchdog
+
+on:
+  schedule:
+    # Every 30 min in publishing window (8:00–22:00 MSK = 5:00–19:00 UTC).
+    # Re-publishes scheduled containers that IG silently failed to fire.
+    - cron: '*/30 5-19 * * *'
+  workflow_dispatch:
+
+env:
+  TIMEZONE: 'Europe/Moscow'
+  IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+  IG_USER_ID: ${{ secrets.IG_USER_ID }}
+  GH_PAT: ${{ secrets.GH_PAT }}
+  GITHUB_REPO: 'alexandermalevich85-commits/Insta-poster'
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Rescue overdue scheduled posts
+        run: python main.py watchdog
+
+      - name: Commit updated statuses
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add pending_posts.json history.json 2>/dev/null || true
+          git stash --include-untracked --quiet 2>/dev/null || true
+          git pull --rebase origin main || true
+          git stash pop --quiet 2>/dev/null || true
+          git add pending_posts.json history.json 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "Auto: watchdog $(date +%Y-%m-%d_%H:%M)"
+          git push origin main || echo "Push failed"

@@ -491,6 +491,71 @@ def cmd_publish_smart():
         time.sleep(3)
 
 
+def cmd_watchdog():
+    """Publish scheduled containers that IG failed to auto-publish on time.
+
+    IG's `publish_at` occasionally doesn't fire — the container stays FINISHED
+    but never gets published. We look for posts with status="scheduled" whose
+    publish_at_ts is more than 5 min in the past and call media_publish manually.
+    """
+    from post_instagram import _publish_container
+
+    pending = load_pending()
+    tz = pytz.timezone(TIMEZONE)
+    now = datetime.now(tz)
+    grace = timedelta(minutes=5)
+
+    rescued = 0
+    for idx, p in enumerate(pending):
+        if p.get("status") != "scheduled":
+            continue
+        container_id = p.get("ig_container_id")
+        if not container_id:
+            continue
+        ts = p.get("publish_at_ts")
+        if ts:
+            sched_dt = datetime.fromtimestamp(ts, tz=tz)
+        else:
+            sched = p.get("scheduled_at")
+            if not sched:
+                continue
+            sched_dt = datetime.fromisoformat(sched)
+            if sched_dt.tzinfo is None:
+                sched_dt = tz.localize(sched_dt)
+        if now - sched_dt < grace:
+            continue
+
+        log.info("Watchdog: rescuing %s (container=%s, slot=%s)",
+                 p["id"], container_id, sched_dt.isoformat())
+        print(f"  Rescuing {p['id']} ({sched_dt.strftime('%H:%M')})...")
+        try:
+            media_id = _publish_container(container_id)
+            pending[idx]["status"] = "published"
+            pending[idx]["published_at"] = datetime.now().isoformat()
+            pending[idx]["ig_media_id"] = media_id
+            save_pending(pending)
+            add_history_entry(p, media_id)
+            rescued += 1
+            print(f"    Published! media_id={media_id}")
+        except Exception as e:
+            msg = str(e)
+            log.error("Watchdog failed for %s: %s", p["id"], msg)
+            print(f"    ERROR: {msg}")
+            pending[idx]["last_error"] = msg
+            pending[idx]["last_error_at"] = datetime.now().isoformat()
+            # If IG already auto-published in the meantime, media_publish returns
+            # an error like "media has already been published". Mark accordingly.
+            if "already" in msg.lower() and "publish" in msg.lower():
+                pending[idx]["status"] = "published"
+                pending[idx]["published_at"] = pending[idx].get("published_at") or datetime.now().isoformat()
+            save_pending(pending)
+
+    if rescued:
+        print(f"Watchdog: rescued {rescued} post(s).")
+    else:
+        print("Watchdog: nothing to rescue.")
+
+
 def cmd_schedule():
     """Schedule all pending carousels via Instagram Scheduled Publishing API.
 
@@ -645,6 +710,7 @@ COMMANDS = {
     "publish": cmd_publish,
     "publish_next": cmd_publish_next,
     "publish_smart": cmd_publish_smart,
+    "watchdog": cmd_watchdog,
     "cleanup_stale": cmd_cleanup_stale,
     "schedule": cmd_schedule,
     "generate_and_schedule": cmd_generate_and_schedule,
