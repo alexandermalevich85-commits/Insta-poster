@@ -400,13 +400,11 @@ with tab_queue:
         if not posts:
             return
         published = sum(1 for p, _ in posts if p.get("status") == "published")
-        scheduled = sum(1 for p, _ in posts if p.get("status") == "scheduled")
         pending_cnt = sum(1 for p, _ in posts if p.get("status") == "pending")
-        c1, c2, c3, c4 = st.columns(4)
+        c1, c2, c3 = st.columns(3)
         c1.metric(f"{label} всего", len(posts))
         c2.metric("Опубликовано", published)
-        c3.metric("Запланировано в IG", scheduled)
-        c4.metric("В ожидании", pending_cnt)
+        c3.metric("В ожидании", pending_cnt)
         with st.expander(f"📅 {label} ({the_date.strftime('%d.%m.%Y')}) — план"):
             for p, sd in posts:
                 status = p.get("status", "")
