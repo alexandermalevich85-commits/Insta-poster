@@ -66,7 +66,18 @@ jobs:
           git add pending_posts.json history.json 2>/dev/null || true
           git stash --include-untracked --quiet 2>/dev/null || true
           git pull --rebase origin main || true
-          git stash pop --quiet 2>/dev/null || true
+          if ! git stash pop --quiet 2>/dev/null; then
+            # Conflict on pop — semantically merge the JSON files instead
+            # of leaving conflict markers in the working tree.
+            python scripts/safe_merge.py || { echo "safe_merge failed"; exit 1; }
+            git stash drop --quiet 2>/dev/null || true
+          fi
+          # Hard fail if any conflict markers slipped through — never
+          # commit a corrupted JSON file again.
+          if grep -lE '^(<<<<<<< |=======$|>>>>>>> )' pending_posts.json history.json 2>/dev/null; then
+            echo "ERROR: conflict markers present after merge; aborting commit"
+            exit 1
+          fi
           git add pending_posts.json history.json 2>/dev/null || true
           git diff --staged --quiet || git commit -m "Auto: publish $(date +%Y-%m-%d_%H:%M)"
           git push origin main || echo "Push failed"
