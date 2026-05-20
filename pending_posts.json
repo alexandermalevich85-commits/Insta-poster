@@ -1268,7 +1268,7 @@
   },
   {
     "id": "937d5f91",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-05-19T06:32:15.692533",
     "scheduled_at": "2026-05-20T19:00:00+03:00",
     "topic": "",
@@ -1287,7 +1287,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали протирать лицо соком алоэ 2 недели, выглядят на 5 лет моложе в 40, а морщины разгладились (косметологи молчат).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "GitHub upload failed (502): {\n  \"message\": \"Server Error\"\n}\n"
   },
   {
     "id": "9a8d2051",
