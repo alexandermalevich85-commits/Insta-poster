@@ -553,7 +553,7 @@
   },
   {
     "id": "ee20df27",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-05-31T06:39:55.668309",
     "scheduled_at": "2026-06-01T16:00:00+03:00",
     "topic": "",
@@ -572,7 +572,8 @@
     "text_provider": "gemini",
     "idea": "Мамы, которые перестали \"наряжать\" 6-летних дочерей 1 месяц, получили на 50% меньше утренних капризов и уверенных в себе модниц (детский стилист шокирован).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "500 Server Error: Internal Server Error for url: https://graph.facebook.com/v21.0/17841402058232007/media_publish"
   },
   {
     "id": "de00d37a",
