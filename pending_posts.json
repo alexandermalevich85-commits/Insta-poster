@@ -3317,7 +3317,7 @@
   },
   {
     "id": "2c943b8b",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-11T07:29:03.378865",
     "scheduled_at": "2026-06-12T19:00:00+03:00",
     "topic": "",
@@ -3336,7 +3336,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые начали *массировать внутреннюю сторону щек большими пальцами* 5 минут в день, подтянули овал лица на 2 см и убрали \"бульдожьи щечки\" за 3 недели, как в 30 лет (косметологи шокированы этим бесплатным методом).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (500): An unexpected error has occurred. Please retry your request later."
   },
   {
     "id": "4bc4abca",
