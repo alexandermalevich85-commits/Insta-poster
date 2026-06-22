@@ -1772,7 +1772,7 @@
   },
   {
     "id": "3ed3ad88",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-21T07:15:56.760506",
     "scheduled_at": "2026-06-22T21:05:00+03:00",
     "topic": "",
@@ -1791,7 +1791,8 @@
     "text_provider": "gemini",
     "idea": "Мамы, которые перестали учить детей читать до 6 лет 3 месяца, получили на 50% более мотивированных к учебе первоклассников (детские педагоги шокированы эффектом \"дозревания\").",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Only photo or video can be accepted as media type."
   },
   {
     "id": "b7e5febf",
