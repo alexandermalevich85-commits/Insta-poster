@@ -169,7 +169,7 @@
   },
   {
     "id": "10551034",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T06:31:27.808456",
     "scheduled_at": "2026-06-25T21:05:00+03:00",
     "topic": "",
@@ -188,7 +188,8 @@
     "text_provider": "gemini",
     "idea": "Многодетная мама, которая стала играть в \"тихие игры\" с детьми 30 минут в день, получила на 70% меньше шума и истерик к вечеру (детские психологи подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 11:16:48 PDT."
   },
   {
     "id": "af155e9a",
@@ -334,7 +335,7 @@
   },
   {
     "id": "14138553",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T11:39:28.421115",
     "scheduled_at": "2026-06-25T21:05:00+03:00",
     "topic": "",
@@ -353,7 +354,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые начали *«жужжать» губами* 5 минут в день, подтянули овал лица на 2 см и разгладили носогубные складки за 3 недели (миотерапевты в восторге от эффекта).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 11:17:09 PDT."
   },
   {
     "id": "3e77a2da",
