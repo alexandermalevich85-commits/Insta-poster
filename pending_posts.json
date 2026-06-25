@@ -193,7 +193,7 @@
   },
   {
     "id": "af155e9a",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T06:31:27.808469",
     "scheduled_at": "2026-06-25T21:30:00+03:00",
     "topic": "",
@@ -212,7 +212,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые начали \"постукивать\" пальцами по кончику носа 1 минуту в день, подтянули верхнюю губу и убрали носогубные складки на 20% за 2 недели (косметологи тихо завидуют).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 11:32:18 PDT."
   },
   {
     "id": "c8c0f88f",
