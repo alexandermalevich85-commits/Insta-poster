@@ -49,7 +49,7 @@
   },
   {
     "id": "7568d9e8",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T06:31:27.808110",
     "scheduled_at": "2026-06-25T13:00:00+03:00",
     "topic": "",
@@ -68,7 +68,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые перестали \"болтать\" о муже с подругами 1 месяц, получили 50% больше внимания от него и цветы без повода (семейный психолог подтвердил).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 03:02:16 PDT."
   },
   {
     "id": "466be906",
@@ -257,7 +258,7 @@
   },
   {
     "id": "76b53bff",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T11:39:28.420420",
     "scheduled_at": "2026-06-25T13:00:00+03:00",
     "topic": "",
@@ -276,7 +277,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, что стали *есть 50 грамм творога на ночь* 3 недели, сбросили 2 кг и просыпаются без отёков (диетологи упорно скрывают секрет белка).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 03:02:40 PDT."
   },
   {
     "id": "7fdf6df8",
