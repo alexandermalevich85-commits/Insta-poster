@@ -25,7 +25,7 @@
   },
   {
     "id": "25827e85",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T06:31:27.807953",
     "scheduled_at": "2026-06-25T11:00:00+03:00",
     "topic": "",
@@ -44,7 +44,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, что принимают 1 ч.л. пророщенной пшеницы каждое утро 1 месяц, забыли о хронической усталости и боли в суставах, как в 25 лет (нутрициологи шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 01:02:12 PDT."
   },
   {
     "id": "7568d9e8",
