@@ -121,7 +121,7 @@
   },
   {
     "id": "da525b51",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T06:31:27.808422",
     "scheduled_at": "2026-06-25T19:00:00+03:00",
     "topic": "",
@@ -140,7 +140,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали стоять на одной ноге 30 секунд каждый день, улучшили координацию на 40% и забыли о головокружениях к 45 годам (неврологи шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 09:02:18 PDT."
   },
   {
     "id": "fe2a738c",
@@ -308,7 +309,7 @@
   },
   {
     "id": "13ad264b",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T11:39:28.420892",
     "scheduled_at": "2026-06-25T19:00:00+03:00",
     "topic": "",
@@ -327,7 +328,8 @@
     "text_provider": "gemini",
     "idea": "Мамы, которые стали *играть в \"догонялки\" 10 минут* в день со своими 5-летними детьми, сократили истерики на 30% и улучшили их сон за 2 недели (детские неврологи подтверждают эффект выплеска энергии).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 09:02:42 PDT."
   },
   {
     "id": "14138553",
