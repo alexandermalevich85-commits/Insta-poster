@@ -73,7 +73,7 @@
   },
   {
     "id": "466be906",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T06:31:27.808253",
     "scheduled_at": "2026-06-25T16:00:00+03:00",
     "topic": "",
@@ -92,7 +92,8 @@
     "text_provider": "gemini",
     "idea": "Родители, которые перестали \"перехватывать\" падающего ребенка 2 недели, вырастили уверенного в себе смельчака и сократили травмы на 30% (детские нейропсихологи подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 06:02:11 PDT."
   },
   {
     "id": "8c648371",
@@ -282,7 +283,7 @@
   },
   {
     "id": "7fdf6df8",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T11:39:28.420668",
     "scheduled_at": "2026-06-25T16:00:00+03:00",
     "topic": "",
@@ -301,7 +302,8 @@
     "text_provider": "gemini",
     "idea": "Она перестала *ЖДАТЬ, что муж догадается о её желаниях*, 1 месяц — и он начал их исполнять, как в первый год брака (семейный психолог подтвердил силу прямой коммуникации).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 06:02:33 PDT."
   },
   {
     "id": "13ad264b",
