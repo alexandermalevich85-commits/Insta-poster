@@ -217,7 +217,7 @@
   },
   {
     "id": "c8c0f88f",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T06:31:27.808482",
     "scheduled_at": "2026-06-25T22:30:00+03:00",
     "topic": "",
@@ -236,7 +236,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали спать с \"белым шумом\" 2 недели, избавились от бессонницы и просыпаются на 80% отдохнувшими, как в 25 лет (сомнологи подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 12:31:57 PDT."
   },
   {
     "id": "c3380520",
