@@ -1,7 +1,7 @@
 [
   {
     "id": "e40004ec",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T06:31:27.807714",
     "scheduled_at": "2026-06-25T10:00:00+03:00",
     "topic": "",
@@ -20,7 +20,8 @@
     "text_provider": "gemini",
     "idea": "Она перестала сидеть, скрестив ноги на стуле 1 месяц — и ее лицо стало симметричнее, а морщины вокруг глаз уменьшились на 20% (остеопаты шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 00:02:14 PDT."
   },
   {
     "id": "25827e85",
@@ -231,7 +232,7 @@
   },
   {
     "id": "c3380520",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-24T11:39:28.419961",
     "scheduled_at": "2026-06-25T10:00:00+03:00",
     "topic": "",
@@ -250,7 +251,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые перестали *умываться ОЧЕНЬ горячей водой* 3 недели, уменьшили покраснения и сухость кожи на 40%, как в 30 лет (дерматологи предупреждают о разрушении защитного слоя).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 25-Jun-26 00:02:38 PDT."
   },
   {
     "id": "76b53bff",
