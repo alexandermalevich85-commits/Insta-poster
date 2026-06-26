@@ -481,7 +481,7 @@
   },
   {
     "id": "c405be64",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-25T06:32:59.140539",
     "scheduled_at": "2026-06-26T19:00:00+03:00",
     "topic": "",
@@ -500,7 +500,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали *ежедневно пить 1 стакан настоя лаврового листа* 3 недели, избавились от хронических головных болей и болей в суставах к 45 годам (народная медицина знала, врачи удивляются).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Friday, 26-Jun-26 09:02:11 PDT."
   },
   {
     "id": "6a67930a",
