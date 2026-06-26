@@ -433,7 +433,7 @@
   },
   {
     "id": "b245217e",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-25T06:32:59.140500",
     "scheduled_at": "2026-06-26T16:00:00+03:00",
     "topic": "",
@@ -452,7 +452,8 @@
     "text_provider": "gemini",
     "idea": "Мамы, которые перестали *заставлять детей доедать все* 2 недели, получили на 50% меньше истерик за столом и здоровый аппетит у малышей (детские диетологи шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Friday, 26-Jun-26 06:02:17 PDT."
   },
   {
     "id": "f9b87519",
