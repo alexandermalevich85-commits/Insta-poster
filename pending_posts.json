@@ -529,7 +529,7 @@
   },
   {
     "id": "bf48eba7",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-25T06:32:59.140713",
     "scheduled_at": "2026-06-26T21:05:00+03:00",
     "topic": "",
@@ -548,7 +548,8 @@
     "text_provider": "gemini",
     "idea": "Мамы, которые *стали рассказывать детям о своих ошибках* 1 раз в неделю, вырастили на 40% более самостоятельных и уверенных в себе подростков (детский психолог подтвердил важность примера).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Friday, 26-Jun-26 11:16:47 PDT."
   },
   {
     "id": "e5ca5e35",
