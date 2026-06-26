@@ -505,7 +505,7 @@
   },
   {
     "id": "6a67930a",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-25T06:32:59.140555",
     "scheduled_at": "2026-06-26T20:30:00+03:00",
     "topic": "",
@@ -524,7 +524,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали *записывать 3 позитивных качества мужа* каждый вечер 2 недели, вернули страсть и доверие в отношениях, как 15 лет назад (семейный психолог подтвердил силу фокуса).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Friday, 26-Jun-26 10:31:59 PDT."
   },
   {
     "id": "bf48eba7",
