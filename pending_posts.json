@@ -409,7 +409,7 @@
   },
   {
     "id": "c161e0a2",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-25T06:32:59.140317",
     "scheduled_at": "2026-06-26T13:00:00+03:00",
     "topic": "",
@@ -428,7 +428,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые перестали *заглядывать в прошлое* перед сном 2 недели, снизили тревожность на 60% и начали видеть яркие сны (нейробиологи подтверждают эффект \"ментальной перезагрузки\").",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Friday, 26-Jun-26 03:02:07 PDT."
   },
   {
     "id": "b245217e",
