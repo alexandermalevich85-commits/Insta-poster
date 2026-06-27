@@ -817,7 +817,7 @@
   },
   {
     "id": "af2fe06a",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-26T06:35:01.047561",
     "scheduled_at": "2026-06-27T22:30:00+03:00",
     "topic": "",
@@ -836,7 +836,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые НЕ МОРГАЮТ достаточно при работе за компьютером 8 часов в день, получили глубокие \"гусиные лапки\" в 35 лет (офтальмологи молчат о перенапряжении).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 27-Jun-26 12:31:37 PDT."
   },
   {
     "id": "8d951bc2",
