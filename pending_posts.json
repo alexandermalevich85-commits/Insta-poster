@@ -697,7 +697,7 @@
   },
   {
     "id": "1fc664ed",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-26T06:35:01.047479",
     "scheduled_at": "2026-06-27T18:30:00+03:00",
     "topic": "",
@@ -716,7 +716,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые перестали СПАТЬ на высокой подушке 1 месяц, \"стерли\" кольца Венеры и убрали второй подбородок за 3 недели (ортопеды молчат о связи осанки и молодости).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 27-Jun-26 08:32:00 PDT."
   },
   {
     "id": "c919ae67",
