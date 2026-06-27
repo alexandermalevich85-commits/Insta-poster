@@ -601,7 +601,7 @@
   },
   {
     "id": "2e554036",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-26T06:35:01.046718",
     "scheduled_at": "2026-06-27T10:00:00+03:00",
     "topic": "",
@@ -620,7 +620,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые НАНОСЯТ крем для глаз ТАК (с легким похлопыванием) 3 недели — и ее морщины вокруг глаз исчезли, а взгляд стал открытым, как в 25 (косметологи скрывают этот бесплатный метод).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 27-Jun-26 00:02:12 PDT."
   },
   {
     "id": "0eea6b84",
