@@ -769,7 +769,7 @@
   },
   {
     "id": "2cf6b656",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-26T06:35:01.047532",
     "scheduled_at": "2026-06-27T21:05:00+03:00",
     "topic": "",
@@ -788,7 +788,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые ПЬЮТ ЛЕДЯНУЮ воду каждый день 1 год, заработали гастрит и выглядят на 5 лет старше (гастроэнтерологи молчат о сосудах).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 27-Jun-26 11:16:24 PDT."
   },
   {
     "id": "442bedd8",
