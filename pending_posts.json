@@ -721,7 +721,7 @@
   },
   {
     "id": "c919ae67",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-26T06:35:01.047501",
     "scheduled_at": "2026-06-27T19:00:00+03:00",
     "topic": "",
@@ -740,7 +740,8 @@
     "text_provider": "gemini",
     "idea": "Те, кто начал ЕСТЬ 1 столовую ложку кокосового масла каждое утро 3 недели, сбросили 2 кг и забыли о сухости кожи, как в 20 лет (диетологи упорно скрывают секрет жирных кислот).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 27-Jun-26 09:02:08 PDT."
   },
   {
     "id": "b3620561",
