@@ -745,7 +745,7 @@
   },
   {
     "id": "b3620561",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-26T06:35:01.047517",
     "scheduled_at": "2026-06-27T20:30:00+03:00",
     "topic": "",
@@ -764,7 +764,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые ЖУЮТ только на одной стороне челюсти 2 месяца, получили асимметрию лица и брыли в 40 лет (стоматологи молчат о вреде).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 27-Jun-26 10:32:02 PDT."
   },
   {
     "id": "2cf6b656",
