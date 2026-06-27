@@ -649,7 +649,7 @@
   },
   {
     "id": "ee30cfb7",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-26T06:35:01.047161",
     "scheduled_at": "2026-06-27T13:00:00+03:00",
     "topic": "",
@@ -668,7 +668,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали ЗАПИСЫВАТЬ 3 вещи, которые их раздражают в муже 1 месяц, улучшили отношения на 40% и перестали ссориться (семейный психолог подтвердил эффект \"выгрузки негатива\").",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 27-Jun-26 03:02:09 PDT."
   },
   {
     "id": "a200e002",
