@@ -1033,7 +1033,7 @@
   },
   {
     "id": "b55bf697",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-27T06:11:39.115202",
     "scheduled_at": "2026-06-28T21:30:00+03:00",
     "topic": "",
@@ -1052,7 +1052,8 @@
     "text_provider": "gemini",
     "idea": "Мамы, которые стали *давать детям выбирать \"семейный рецепт\" ужина* 1 раз в неделю, сократили капризы на 50% и получили помощников на кухне за месяц (детские диетологи шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 28-Jun-26 11:31:36 PDT."
   },
   {
     "id": "bcd15e9f",
