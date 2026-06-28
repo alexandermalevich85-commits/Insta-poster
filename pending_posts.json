@@ -937,7 +937,7 @@
   },
   {
     "id": "c6a04935",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-27T06:11:39.115001",
     "scheduled_at": "2026-06-28T18:30:00+03:00",
     "topic": "",
@@ -956,7 +956,8 @@
     "text_provider": "gemini",
     "idea": "Родители, которые разрешили 6-летнему ребенку *самостоятельно выбирать, с кем дружить*, сократили истерики на 70% и получили уверенного в себе лидера за 2 месяца (детские психологи шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 28-Jun-26 08:31:46 PDT."
   },
   {
     "id": "2374753c",
