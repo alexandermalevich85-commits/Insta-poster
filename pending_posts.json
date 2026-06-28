@@ -1009,7 +1009,7 @@
   },
   {
     "id": "7d1d1276",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-27T06:11:39.115187",
     "scheduled_at": "2026-06-28T21:05:00+03:00",
     "topic": "",
@@ -1028,7 +1028,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые перестали *искать в себе \"недостатки\" в зеркале* 1 месяц, почувствовали себя на 10 лет моложе, а морщины стали менее заметны (психологи подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 28-Jun-26 11:16:31 PDT."
   },
   {
     "id": "b55bf697",
