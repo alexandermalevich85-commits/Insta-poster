@@ -985,7 +985,7 @@
   },
   {
     "id": "da72b95c",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-27T06:11:39.115171",
     "scheduled_at": "2026-06-28T20:30:00+03:00",
     "topic": "",
@@ -1004,7 +1004,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые отказались от *цельнозернового хлеба* на 1 месяц, сбросили 5 кг и забыли о хроническом вздутии (диетологи упорно молчат о \"скрытом глютене\").",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 28-Jun-26 10:31:44 PDT."
   },
   {
     "id": "7d1d1276",
