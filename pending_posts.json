@@ -865,7 +865,7 @@
   },
   {
     "id": "c12a0ef5",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-27T06:11:39.114648",
     "scheduled_at": "2026-06-28T11:00:00+03:00",
     "topic": "",
@@ -884,7 +884,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали спать, положив голову на *край кровати на 10 минут* перед сном, убрали второй подбородок и разгладили морщины на шее за 3 недели (косметологи шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 28-Jun-26 01:01:51 PDT."
   },
   {
     "id": "aabd36b3",
