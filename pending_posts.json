@@ -841,7 +841,7 @@
   },
   {
     "id": "8d951bc2",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-27T06:11:39.114414",
     "scheduled_at": "2026-06-28T10:00:00+03:00",
     "topic": "",
@@ -860,7 +860,8 @@
     "text_provider": "gemini",
     "idea": "Вот 10 уникальных тем для Instagram-каруселей:",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 28-Jun-26 00:01:53 PDT."
   },
   {
     "id": "c12a0ef5",
