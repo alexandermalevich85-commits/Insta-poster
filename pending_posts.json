@@ -961,7 +961,7 @@
   },
   {
     "id": "2374753c",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-27T06:11:39.115151",
     "scheduled_at": "2026-06-28T19:00:00+03:00",
     "topic": "",
@@ -980,7 +980,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали *легко похлопывать пальцами по зоне вокруг глаз* 2 минуты каждый вечер, \"стерли\" мелкие морщины и убрали темные круги за 3 недели (косметологи скрывают этот \"японский\" секрет).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 28-Jun-26 09:01:49 PDT."
   },
   {
     "id": "da72b95c",
