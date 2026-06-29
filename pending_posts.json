@@ -1225,7 +1225,7 @@
   },
   {
     "id": "cc414667",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-28T06:42:04.485965",
     "scheduled_at": "2026-06-29T20:30:00+03:00",
     "topic": "",
@@ -1244,7 +1244,8 @@
     "text_provider": "gemini",
     "idea": "Те, кто начал *пить 1 стакан воды с щепоткой красного перца* утром, сбросили 3 кг за 2 недели и избавились от хронической мигрени (диетологи упорно молчат о метаболизме).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Monday, 29-Jun-26 10:31:34 PDT."
   },
   {
     "id": "d4e803f1",
