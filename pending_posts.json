@@ -1153,7 +1153,7 @@
   },
   {
     "id": "8c155ebd",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-28T06:42:04.485548",
     "scheduled_at": "2026-06-29T16:00:00+03:00",
     "topic": "",
@@ -1172,7 +1172,8 @@
     "text_provider": "gemini",
     "idea": "Она *перестала \"закрывать глаза\"* на мелкие обиды мужа 2 месяца — и он начал дарить цветы и извиняться без просьб (семейный психолог подтвердил восстановление уважения).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Monday, 29-Jun-26 06:02:00 PDT."
   },
   {
     "id": "357c7ff3",
