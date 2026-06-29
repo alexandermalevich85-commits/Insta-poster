@@ -1105,7 +1105,7 @@
   },
   {
     "id": "107531b5",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-28T06:42:04.485319",
     "scheduled_at": "2026-06-29T11:00:00+03:00",
     "topic": "",
@@ -1124,7 +1124,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые начали *спать на спине, положив подушку ПОД ЛОПАТКИ* 1 месяц, убрали морщины на шее и подтянули овал лица на 2 см (ортопеды подтверждают связь с осанкой).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Monday, 29-Jun-26 01:02:27 PDT."
   },
   {
     "id": "19fb473e",
