@@ -1297,7 +1297,7 @@
   },
   {
     "id": "2801d62e",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-28T06:42:04.486009",
     "scheduled_at": "2026-06-29T22:30:00+03:00",
     "topic": "",
@@ -1316,7 +1316,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали *стучать зубами 1 минуту* каждый вечер, подтянули овал лица на 1 см и убрали носогубные складки за 2 недели (стоматологи молчат о мышцах).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Monday, 29-Jun-26 12:31:51 PDT."
   },
   {
     "id": "7fe5a0c9",
