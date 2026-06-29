@@ -1201,7 +1201,7 @@
   },
   {
     "id": "20f834c6",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-28T06:42:04.485946",
     "scheduled_at": "2026-06-29T19:00:00+03:00",
     "topic": "",
@@ -1220,7 +1220,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали *ежедневно \"зевать\" широко* 10 раз утром, подтянули овал лица и убрали \"бульдожьи щечки\" за 3 недели (косметологи скрывают связь с мышцами).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Monday, 29-Jun-26 09:01:43 PDT."
   },
   {
     "id": "cc414667",
