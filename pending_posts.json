@@ -1081,7 +1081,7 @@
   },
   {
     "id": "6e86a4db",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-28T06:42:04.485050",
     "scheduled_at": "2026-06-29T10:00:00+03:00",
     "topic": "",
@@ -1100,7 +1100,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые начали *делать 2-минутный массаж зоны декольте кисточкой для макияжа* каждый вечер, подтянули кожу и убрали \"кольца Венеры\" за 4 недели (эстетисты скрывают этот нежный метод).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Monday, 29-Jun-26 00:01:46 PDT."
   },
   {
     "id": "107531b5",
