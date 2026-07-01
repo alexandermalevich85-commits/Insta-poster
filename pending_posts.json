@@ -1609,7 +1609,7 @@
   },
   {
     "id": "1e51fc93",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-30T06:37:53.292142",
     "scheduled_at": "2026-07-01T13:00:00+03:00",
     "topic": "",
@@ -1628,7 +1628,8 @@
     "text_provider": "gemini",
     "idea": "Она перестала *ждать \"идеального момента\" для счастья* в 40 лет — и за полгода нашла новое хобби и почувствовала себя на 15 лет моложе (психотерапевты подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Wednesday, 01-Jul-26 03:01:55 PDT."
   },
   {
     "id": "81bbb361",
