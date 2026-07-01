@@ -1729,7 +1729,7 @@
   },
   {
     "id": "be8f2080",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-30T06:37:53.292664",
     "scheduled_at": "2026-07-01T21:05:00+03:00",
     "topic": "",
@@ -1748,7 +1748,8 @@
     "text_provider": "gemini",
     "idea": "Родители, которые *позволили 7-летнему ребенку \"ошибаться\"* без критики 1 месяц, вырастили на 50% более уверенного в себе лидера (педагоги в шоке от результата).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Wednesday, 01-Jul-26 11:16:53 PDT."
   },
   {
     "id": "3e243c28",
