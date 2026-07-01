@@ -1705,7 +1705,7 @@
   },
   {
     "id": "5929b007",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-30T06:37:53.292458",
     "scheduled_at": "2026-07-01T20:30:00+03:00",
     "topic": "",
@@ -1724,7 +1724,8 @@
     "text_provider": "gemini",
     "idea": "Она перестала *спрашивать \"Разрешения\" у других* в 45 лет — и её самооценка взлетела на 70%, а муж снова влюбился в неё (психологи шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Wednesday, 01-Jul-26 10:31:43 PDT."
   },
   {
     "id": "be8f2080",
