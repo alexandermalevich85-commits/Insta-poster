@@ -1633,7 +1633,7 @@
   },
   {
     "id": "81bbb361",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-30T06:37:53.292153",
     "scheduled_at": "2026-07-01T16:00:00+03:00",
     "topic": "",
@@ -1652,7 +1652,8 @@
     "text_provider": "gemini",
     "idea": "Родители, которые *разрешили подростку \"скучать\" 30 минут* в день, получили креативного и самостоятельного ребенка за 1 месяц (детские психологи подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Wednesday, 01-Jul-26 06:01:52 PDT."
   },
   {
     "id": "80085d5c",
