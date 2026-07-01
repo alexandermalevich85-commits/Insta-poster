@@ -1585,7 +1585,7 @@
   },
   {
     "id": "5f9312a7",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-06-30T06:37:53.292128",
     "scheduled_at": "2026-07-01T11:00:00+03:00",
     "topic": "",
@@ -1604,7 +1604,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, что стали *есть 1 столовую ложку кунжута* утром 1 месяц, забыли о хрупких костях и болях в суставах, как в 25 лет (ортопеды шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Wednesday, 01-Jul-26 01:01:54 PDT."
   },
   {
     "id": "1e51fc93",
