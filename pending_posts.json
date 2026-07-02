@@ -1825,7 +1825,7 @@
   },
   {
     "id": "eac5edf9",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-01T06:50:31.833441",
     "scheduled_at": "2026-07-02T11:00:00+03:00",
     "topic": "",
@@ -1844,7 +1844,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали пить 1 стакан *воды с куркумой и черным перцем* на ночь, сбросили 3 кг за 2 недели и избавились от болей в суставах (диетологи упорно молчат).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 02-Jul-26 01:01:52 PDT."
   },
   {
     "id": "8b7659aa",
