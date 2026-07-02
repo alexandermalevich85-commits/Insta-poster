@@ -1849,7 +1849,7 @@
   },
   {
     "id": "8b7659aa",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-01T06:50:31.833653",
     "scheduled_at": "2026-07-02T13:00:00+03:00",
     "topic": "",
@@ -1868,7 +1868,8 @@
     "text_provider": "gemini",
     "idea": "Она перестала *отвечать на \"неудобные\" вопросы* родственников 1 месяц — и ее тревожность упала на 60%, а муж стал ценить ее личные границы (психотерапевты подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 02-Jul-26 03:01:57 PDT."
   },
   {
     "id": "1b162324",
