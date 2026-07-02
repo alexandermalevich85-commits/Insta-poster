@@ -1993,7 +1993,7 @@
   },
   {
     "id": "c6b13af8",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-01T06:50:31.834088",
     "scheduled_at": "2026-07-02T21:30:00+03:00",
     "topic": "",
@@ -2012,7 +2012,8 @@
     "text_provider": "gemini",
     "idea": "Она перестала *читать \"умные\" книги по саморазвитию* 2 недели — и ее уровень стресса упал на 70%, а в жизни появился настоящий мужчина (психологи подтверждают: \"иногда молчание полезнее\").",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Thursday, 02-Jul-26 11:31:55 PDT."
   },
   {
     "id": "635c8451",
