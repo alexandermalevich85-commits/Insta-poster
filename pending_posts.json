@@ -2113,7 +2113,7 @@
   },
   {
     "id": "f060e6dd",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-02T06:16:30.275432",
     "scheduled_at": "2026-07-03T16:00:00+03:00",
     "topic": "",
@@ -2132,7 +2132,8 @@
     "text_provider": "gemini",
     "idea": "Мамы, которые разрешили 5-летнему ребенку выбирать \"наказание\" за проступок, сократили истерики на 70% и получили самостоятельного малыша (детский психолог шокирован).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Friday, 03-Jul-26 06:02:07 PDT."
   },
   {
     "id": "eba636ff",
