@@ -2185,7 +2185,7 @@
   },
   {
     "id": "ea5c7768",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-02T06:16:30.275664",
     "scheduled_at": "2026-07-03T20:30:00+03:00",
     "topic": "",
@@ -2204,7 +2204,8 @@
     "text_provider": "gemini",
     "idea": "Она перестала \"ждать чуда\" и начала сама менять жизнь в 40 лет — за полгода похудела на 10 кг, нашла новое хобби и почувствовала себя на 15 лет моложе (психотерапевты подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Friday, 03-Jul-26 10:31:43 PDT."
   },
   {
     "id": "b6dfaade",
