@@ -2065,7 +2065,7 @@
   },
   {
     "id": "7e8fdee1",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-02T06:16:30.275186",
     "scheduled_at": "2026-07-03T11:00:00+03:00",
     "topic": "",
@@ -2084,7 +2084,8 @@
     "text_provider": "gemini",
     "idea": "Те, кто отказался от \"легких\" завтраков (хлопьев/йогуртов) на 3 недели, сбросили 4 кг и забыли о хронической усталости (эндокринологи шокированы эффектом на сахар).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Friday, 03-Jul-26 01:02:06 PDT."
   },
   {
     "id": "706fd566",
