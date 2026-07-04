@@ -2497,7 +2497,7 @@
   },
   {
     "id": "597f40d6",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-03T06:10:30.804923",
     "scheduled_at": "2026-07-04T22:30:00+03:00",
     "topic": "",
@@ -2516,7 +2516,8 @@
     "text_provider": "gemini",
     "idea": "Она начала *дышать \"квадратным\" дыханием* 10 минут в день в 40 лет — и её хронические боли в спине исчезли, а уровень стресса упал на 70% (нейробиологи подтверждают эффект на нервную систему).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 04-Jul-26 12:31:56 PDT."
   },
   {
     "id": "b79da812",
