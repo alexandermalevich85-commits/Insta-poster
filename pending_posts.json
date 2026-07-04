@@ -2329,7 +2329,7 @@
   },
   {
     "id": "e28811f8",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-03T06:10:30.804195",
     "scheduled_at": "2026-07-04T13:00:00+03:00",
     "topic": "",
@@ -2348,7 +2348,8 @@
     "text_provider": "gemini",
     "idea": "Она перестала *сравнивать себя с картинками в Instagram* 2 недели — и ее муж снова влюбился в нее, а самооценка взлетела на 70% (психотерапевты подтверждают эффект).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 04-Jul-26 03:01:56 PDT."
   },
   {
     "id": "4d7df846",
