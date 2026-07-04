@@ -2377,7 +2377,7 @@
   },
   {
     "id": "c4fe7ee0",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-03T06:10:30.804215",
     "scheduled_at": "2026-07-04T18:30:00+03:00",
     "topic": "",
@@ -2396,7 +2396,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали *спать с \"ананасом\" (высокий хвост на макушке)* 1 месяц, разгладили морщины на лбу и подтянули верхнее веко на 1 мм (парикмахеры молчат о бесплатном лифтинге).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 04-Jul-26 08:31:46 PDT."
   },
   {
     "id": "22c9a9d7",
