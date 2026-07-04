@@ -2473,7 +2473,7 @@
   },
   {
     "id": "af8f1119",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-03T06:10:30.804902",
     "scheduled_at": "2026-07-04T21:30:00+03:00",
     "topic": "",
@@ -2492,7 +2492,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали *моргать \"по-кошачьи\" (медленно и глубоко)* 5 минут в день, разгладили \"гусиные лапки\" и убрали сухость глаз за 3 недели (офтальмологи молчат о мимической тренировке).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 04-Jul-26 11:31:49 PDT."
   },
   {
     "id": "597f40d6",
