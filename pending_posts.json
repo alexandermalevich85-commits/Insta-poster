@@ -2425,7 +2425,7 @@
   },
   {
     "id": "5de4203c",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-03T06:10:30.804482",
     "scheduled_at": "2026-07-04T20:30:00+03:00",
     "topic": "",
@@ -2444,7 +2444,8 @@
     "text_provider": "gemini",
     "idea": "Она перестала *записывать \"списки дел\" на каждый день* 1 месяц — и ее тревожность упала на 80%, а в жизни появилось больше спонтанности (коучи по продуктивности в шоке).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 04-Jul-26 10:31:47 PDT."
   },
   {
     "id": "48fc0208",
