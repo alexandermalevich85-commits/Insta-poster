@@ -2305,7 +2305,7 @@
   },
   {
     "id": "ed5992f6",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-03T06:10:30.804181",
     "scheduled_at": "2026-07-04T11:00:00+03:00",
     "topic": "",
@@ -2324,7 +2324,8 @@
     "text_provider": "gemini",
     "idea": "Те, кто стал *принимать холодную ванну 5 минут* каждый вечер, сбросили 4 кг за месяц и забыли о хронических простудах (иммунологи в шоке от эффекта).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 04-Jul-26 01:01:59 PDT."
   },
   {
     "id": "e28811f8",
