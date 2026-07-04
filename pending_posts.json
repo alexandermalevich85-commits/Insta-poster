@@ -2449,7 +2449,7 @@
   },
   {
     "id": "48fc0208",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-03T06:10:30.804713",
     "scheduled_at": "2026-07-04T21:05:00+03:00",
     "topic": "",
@@ -2468,7 +2468,8 @@
     "text_provider": "gemini",
     "idea": "Родители, которые разрешили 4-летнему ребенку *выбирать \"свой\" звук для истерики* 1 неделю, сократили капризы на 60% и получили более спокойного малыша (детские психологи подтверждают эффект контроля).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 04-Jul-26 11:16:33 PDT."
   },
   {
     "id": "af8f1119",
