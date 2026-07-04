@@ -2281,7 +2281,7 @@
   },
   {
     "id": "361f8d57",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-03T06:10:30.804154",
     "scheduled_at": "2026-07-04T10:00:00+03:00",
     "topic": "",
@@ -2300,7 +2300,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые начали *петь громко* 15 минут в день, подтянули овал лица на 2 см и убрали \"брыли\" за месяц (лор-врачи подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Saturday, 04-Jul-26 00:02:08 PDT."
   },
   {
     "id": "ed5992f6",
