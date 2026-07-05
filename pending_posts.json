@@ -2641,7 +2641,7 @@
   },
   {
     "id": "8a3af5b6",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-04T06:04:24.068699",
     "scheduled_at": "2026-07-05T19:00:00+03:00",
     "topic": "",
@@ -2660,7 +2660,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые начали *полоскать рот солевым раствором* 2 недели, забыли о кровоточивости десен и выглядели на 5 лет моложе из-за сияющей улыбки (стоматологи молчат о бактериях).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 05-Jul-26 09:02:06 PDT."
   },
   {
     "id": "31667532",
