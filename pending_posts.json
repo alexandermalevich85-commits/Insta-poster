@@ -2737,7 +2737,7 @@
   },
   {
     "id": "b61a6d73",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-04T06:04:24.068755",
     "scheduled_at": "2026-07-05T22:30:00+03:00",
     "topic": "",
@@ -2756,7 +2756,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали *спать на спине, положив ладони под затылок* 1 месяц, разгладили морщины на шее на 20% и улучшили сон на 50% (остеопаты молчат о расслаблении шейного отдела).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 05-Jul-26 12:31:47 PDT."
   },
   {
     "id": "ceabe554",
