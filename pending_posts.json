@@ -2617,7 +2617,7 @@
   },
   {
     "id": "4d2387b9",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-04T06:04:24.068681",
     "scheduled_at": "2026-07-05T18:30:00+03:00",
     "topic": "",
@@ -2636,7 +2636,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые стали *смотреть на себя в зеркало с улыбкой* 3 минуты в день, подтянули овал лица и разгладили морщины вокруг губ за 2 недели (психологи и косметологи шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 05-Jul-26 08:31:50 PDT."
   },
   {
     "id": "8a3af5b6",
