@@ -2593,7 +2593,7 @@
   },
   {
     "id": "d716971d",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-04T06:04:24.068550",
     "scheduled_at": "2026-07-05T16:00:00+03:00",
     "topic": "",
@@ -2612,7 +2612,8 @@
     "text_provider": "gemini",
     "idea": "Родители, которые перестали *пытаться \"отвлечь\" ребенка от истерики* 2 недели, сократили капризы на 50% и научили малыша управлять эмоциями (детский психолог подтверждает).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 05-Jul-26 06:01:56 PDT."
   },
   {
     "id": "4d2387b9",
