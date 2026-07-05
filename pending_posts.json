@@ -2521,7 +2521,7 @@
   },
   {
     "id": "b79da812",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-04T06:04:24.067995",
     "scheduled_at": "2026-07-05T10:00:00+03:00",
     "topic": "",
@@ -2540,7 +2540,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые *перестали хмуриться на свои отражения* 1 месяц, стерли морщины на лбу и выглядят на 5 лет моложе (косметологи молчат о психосоматике).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 05-Jul-26 00:02:04 PDT."
   },
   {
     "id": "82296f74",
