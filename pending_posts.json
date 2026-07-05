@@ -2665,7 +2665,7 @@
   },
   {
     "id": "31667532",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-04T06:04:24.068715",
     "scheduled_at": "2026-07-05T20:30:00+03:00",
     "topic": "",
@@ -2684,7 +2684,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые перестали *тянуться к телефону сразу после пробуждения* 1 месяц, снизили тревожность на 70% и просыпаются полными сил, как в 25 лет (нейробиологи подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 05-Jul-26 10:31:48 PDT."
   },
   {
     "id": "4feee533",
