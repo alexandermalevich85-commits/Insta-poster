@@ -2545,7 +2545,7 @@
   },
   {
     "id": "82296f74",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-04T06:04:24.068253",
     "scheduled_at": "2026-07-05T11:00:00+03:00",
     "topic": "",
@@ -2564,7 +2564,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, что едят *1 киви перед сном* 2 недели, забыли о бессоннице и просыпаются с энергией, как в 20 лет (сомнологи в недоумении).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Sunday, 05-Jul-26 01:01:56 PDT."
   },
   {
     "id": "5b62ce5b",
