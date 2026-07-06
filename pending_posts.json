@@ -2785,7 +2785,7 @@
   },
   {
     "id": "4893557a",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-05T06:19:57.484519",
     "scheduled_at": "2026-07-06T11:00:00+03:00",
     "topic": "",
@@ -2804,7 +2804,8 @@
     "text_provider": "gemini",
     "idea": "Те, кто стал *сидеть на корточках 5 минут после еды* 1 месяц, сбросили 3 кг и забыли о вздутии живота (гастроэнтерологи шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Monday, 06-Jul-26 01:02:09 PDT."
   },
   {
     "id": "30049355",
