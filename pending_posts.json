@@ -2857,7 +2857,7 @@
   },
   {
     "id": "4dd020e1",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-05T06:19:57.484869",
     "scheduled_at": "2026-07-06T18:30:00+03:00",
     "topic": "",
@@ -2876,7 +2876,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые начали *«прищуриваться» как лиса* 5 минут в день, \"стерли\" морщины вокруг глаз на 30% за 2 недели (мимические терапевты молчат).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Monday, 06-Jul-26 08:31:56 PDT."
   },
   {
     "id": "fff2b912",
