@@ -2761,7 +2761,7 @@
   },
   {
     "id": "ceabe554",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-05T06:19:57.484260",
     "scheduled_at": "2026-07-06T10:00:00+03:00",
     "topic": "",
@@ -2780,7 +2780,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые начали *«моргать» как сова* 10 раз в день, убрали «гусиные лапки» и подтянули верхнее веко за 2 недели (офтальмологи молчат).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Monday, 06-Jul-26 00:02:05 PDT."
   },
   {
     "id": "4893557a",
