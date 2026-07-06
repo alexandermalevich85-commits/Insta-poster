@@ -2905,7 +2905,7 @@
   },
   {
     "id": "c0456516",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-05T06:19:57.485048",
     "scheduled_at": "2026-07-06T20:30:00+03:00",
     "topic": "",
@@ -2924,7 +2924,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые *разрешили себе плакать 15 минут в день* 2 недели, снизили уровень стресса на 70% и улучшили сон, как в 25 лет (психотерапевты подтверждают).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Monday, 06-Jul-26 10:32:04 PDT."
   },
   {
     "id": "a54c57c9",
