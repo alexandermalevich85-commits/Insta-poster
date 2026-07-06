@@ -2833,7 +2833,7 @@
   },
   {
     "id": "90ecd1aa",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-05T06:19:57.484849",
     "scheduled_at": "2026-07-06T16:00:00+03:00",
     "topic": "",
@@ -2852,7 +2852,8 @@
     "text_provider": "gemini",
     "idea": "Мамы, которые перестали *угрожать \"лишить планшета\"* 1 месяц, получили на 70% меньше истерик и послушных детей (детский психолог подтвердил).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Monday, 06-Jul-26 06:00:43 PDT."
   },
   {
     "id": "4dd020e1",
