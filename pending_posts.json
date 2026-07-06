@@ -2953,7 +2953,7 @@
   },
   {
     "id": "1fd4d859",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-07-05T06:19:57.485082",
     "scheduled_at": "2026-07-06T21:30:00+03:00",
     "topic": "",
@@ -2972,7 +2972,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые *стали спать без наволочки* 1 месяц, убрали морщины на щеках на 40% и получили сияющую кожу, как в 20 лет (дерматологи молчат о трении).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (400): Error validating access token: Session has expired on Wednesday, 24-Jun-26 09:44:40 PDT. The current time is Monday, 06-Jul-26 11:31:58 PDT."
   },
   {
     "id": "fbba233e",
