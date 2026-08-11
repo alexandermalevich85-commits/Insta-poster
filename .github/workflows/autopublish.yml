@@ -52,7 +52,15 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git pull --rebase origin main || true
           git add pending_posts.json ideas.json history.json 2>/dev/null || true
           git diff --staged --quiet || git commit -m "Auto: generate $(date +%Y-%m-%d_%H:%M)"
-          git push origin main || echo "Push failed"
+          # Retry push up to 3 times with rebase in case of concurrent pushes
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && break
+            echo "Push attempt $i failed, retrying..."
+            sleep 5
+            if [ $i -eq 3 ]; then
+              echo "ERROR: Push failed after 3 attempts"
+              exit 1
+            fi
+          done
