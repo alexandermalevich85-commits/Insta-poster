@@ -1178,7 +1178,7 @@
   },
   {
     "id": "adec599d",
-    "status": "pending",
+    "status": "published",
     "created_at": "2026-08-16T03:19:11.342216",
     "scheduled_at": "2026-08-17T16:00:00+03:00",
     "topic": "",
@@ -1196,12 +1196,12 @@
     "caption": "‼️Напиши «КРАСОТА» в комменты\n- поделюсь своей системой естественного омоложения изнутри без дорогой косметики\n\nP.s.: Возможно, мы больше никогда \nс тобой не увидимся - не забудь подпи sаtся ✏️ @lana_surskaya \nи поделиться с подружкой 😉",
     "text_provider": "gemini",
     "idea": "Женщины, которые НАЧАЛИ *завтракать только белковой пищей* 1 месяц, сбросили 5 кг и забыли о перепадах настроения, как в 25 лет (диетологи упорно молчат).",
-    "published_at": null,
-    "ig_media_id": null
+    "published_at": "2026-08-19T11:55:39.305026",
+    "ig_media_id": "17878449840526234"
   },
   {
     "id": "2a06b27f",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-08-16T03:19:11.342385",
     "scheduled_at": "2026-08-17T18:30:00+03:00",
     "topic": "",
@@ -1220,7 +1220,8 @@
     "text_provider": "gemini",
     "idea": "Те, кто стал *принимать холодную ванну 5 минут* каждый вечер, сбросили 4 кг за месяц и забыли о хронических простудах (иммунологи в шоке от эффекта).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "HTTPSConnectionPool(host='api.github.com', port=443): Max retries exceeded with url: /repos/alexandermalevich85-commits/Insta-poster/contents/posts-images/55d6dfb862664489a8bd3a362259dd1a.jpg (Caused by NameResolutionError(\"HTTPSConnection(host='api.github.com', port=443): Failed to resolve 'api.github.com' ([Errno 8] nodename nor servname provided, or not known)\"))"
   },
   {
     "id": "b5888cc1",
