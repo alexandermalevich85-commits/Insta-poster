@@ -3230,7 +3230,7 @@
   },
   {
     "id": "4e857b5d",
-    "status": "pending",
+    "status": "published",
     "created_at": "2026-08-25T03:20:02.835069",
     "scheduled_at": "2026-08-26T13:00:00+03:00",
     "topic": "",
@@ -3248,12 +3248,12 @@
     "caption": "‼️Напиши «КОРОЛЕВА» в комменты\n- научу отвечать на любые провокации так, чтобы мужчина тебя зауважал\n\nP.s.: Возможно, мы больше никогда \nс тобой не увидимся - не забудь подпи sаtся ✏️ @lana_surskaya \nи поделиться с подружкой 😉",
     "text_provider": "gemini",
     "idea": "Женщины, которые *перестали \"угождать\" всем подряд* в 40 лет, получили от мужа 3 подарка за месяц и почувствовали себя счастливее на 80% (психологи подтверждают эффект самоценности).",
-    "published_at": null,
-    "ig_media_id": null
+    "published_at": "2026-08-26T17:22:44.990589",
+    "ig_media_id": "18145547401480018"
   },
   {
     "id": "ebdc9cbb",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-08-25T03:20:02.835239",
     "scheduled_at": "2026-08-26T16:00:00+03:00",
     "topic": "",
@@ -3272,7 +3272,8 @@
     "text_provider": "gemini",
     "idea": "Мамы, которые *стали рассказывать детям о своих \"плохих\" оценках в школе* 1 раз в неделю, вырастили на 40% более мотивированных к учебе подростков (педагоги шокированы).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "Instagram API error (429): <!DOCTYPE html>\n<html lang=\"en\" id=\"facebook\">\n\n<head>\n  <title>Facebook | Error</title>\n  <meta charset=\"utf-8\">\n  <meta http-equiv=\"cache-control\" content=\"no-cache\">\n  <meta http-equiv=\"cache-control\" content=\"no-store\">\n  <meta http-equiv=\"cache-control\" content=\"max-age=0\">\n  <meta http-equiv=\"expires\" content=\"-1\">\n  <meta http-equiv=\"pragma\" content=\"no-cache\">\n  <meta name=\"robots\" content=\"noindex,nofollow\">\n  <style>\n    html,\n    body {\n      color: #141823;\n      background-color: #e9eaed;\n      font-family: Helvetica, Lucida Grande, Arial,\n        Tahoma, Verdana, sans-serif;\n      margin: 0;\n      padding: 0;\n      text-align: center;\n    }\n\n    #header {\n      height: 30px;\n      padding-bottom: 10px;\n      padding-top: 10px;\n      text-align: center;\n    }\n\n    #icon {\n      width: 30px;\n    }\n\n    h1 {\n      font-size: 18px;\n    }\n\n    p {\n      font-size: 13px;\n    }\n\n    #footer {\n      border-top: 1px solid #ddd;\n      color: #9197a3;\n      font-size: 12px;\n      padding: 5px 8px 6px 0;\n    }\n  </style>\n</head>\n\n<body>\n  <div id=\"header\">\n    <a href=\"//www.facebook.com/\">\n      <img id=\"icon\" src=\"//static.facebook.com/images/logos/facebook_2x.png\" />\n    </a>\n  </div>\n  <div id=\"core\">\n    <h1 id=\"sorry\">Sorry, something went wrong.</h1>\n    <p id=\"promise\">\n      We're working on it and we'll get it fixed as soon as we can.\n    </p>\n    <p id=\"back-link\">\n      <a id=\"back\" href=\"//www.facebook.com/\">Go Back</a>\n    </p>\n    <div id=\"footer\">\n      Facebook\n      <span id=\"copyright\">\n        &copy; 2024\n      </span>\n      <span id=\"help-link\">\n        &#183;\n        <a id=\"help\" href=\"//www.facebook.com/help/\">Help Center</a>\n      </span>\n    </div>\n  </div>\n  <script>\n    document.getElementById('back').onclick = function () {\n      if (history.length > 1) {\n        history.back();\n        return false;\n      }\n    };\n\n    // Adjust the display based on the window size\n    if (window.innerHeight < 80 || window.innerWidth < 80) {\n      // Blank if window is too small\n      document.body.style.display = 'none';\n    };\n    if (window.innerWidth < 200 || window.innerHeight < 150) {\n      document.getElementById('back-link').style.display = 'none';\n      document.getElementById('help-link').style.display = 'none';\n    };\n    if (window.innerWidth < 200) {\n      document.getElementById('sorry').style.fontSize = '16px';\n    };\n    if (window.innerWidth < 150) {\n      document.getElementById('promise').style.display = 'none';\n    };\n    if (window.innerHeight < 150) {\n      document.getElementById('sorry').style.margin = '4px 0 0 0';\n      document.getElementById('sorry').style.fontSize = '14px';\n      document.getElementById('promise').style.display = 'none';\n    };\n\n    document.getElementById('copyright').textContent = '© ' + new Date().getFullYear();\n  </script>\n</body>\n\n</html>\n"
   },
   {
     "id": "c1cb5cd7",
