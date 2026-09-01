@@ -4404,7 +4404,7 @@
   },
   {
     "id": "bb0aff74",
-    "status": "pending",
+    "status": "published",
     "created_at": "2026-08-30T08:26:56.926590",
     "scheduled_at": "2026-08-31T16:00:00+03:00",
     "topic": "",
@@ -4422,12 +4422,12 @@
     "caption": "Напиши «ПАРАЛЛЕЛИ» в комменты\n- скину видео, в котором расскажу как ещё можно решить свои проблемы на лице\n\nP.s.: Возможно, мы больше никогда \nс тобой не увидимся - не забудь подпи sаtся ✏️ @lana_surskaya \nи поделиться с подружкой 😉",
     "text_provider": "gemini",
     "idea": "Мамы, которые стали *петь детям колыбельные* 15 минут каждый вечер, сократили истерики на 60% и улучшили их сон за 2 недели (детские неврологи подтверждают).",
-    "published_at": null,
-    "ig_media_id": null
+    "published_at": "2026-09-01T06:54:36.387919",
+    "ig_media_id": "18085524875679808"
   },
   {
     "id": "1588cfde",
-    "status": "pending",
+    "status": "failed",
     "created_at": "2026-08-30T08:26:56.926603",
     "scheduled_at": "2026-08-31T18:30:00+03:00",
     "topic": "",
@@ -4446,7 +4446,8 @@
     "text_provider": "gemini",
     "idea": "Женщины, которые начали *протирать лицо соком свежего огурца* 2 недели, \"стерли\" пигментные пятна и выглядели на 7 лет моложе (косметологи скрывают этот бесплатный метод).",
     "published_at": null,
-    "ig_media_id": null
+    "ig_media_id": null,
+    "error": "GitHub upload failed (400): {\"message\": \"We received a malformed request from your client. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}\r\n"
   },
   {
     "id": "02dc69d5",
